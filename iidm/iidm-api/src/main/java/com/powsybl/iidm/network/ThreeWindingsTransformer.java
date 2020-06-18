@@ -282,12 +282,14 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
             return getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
         }
 
-        /**
-         * @deprecated Use {@link #newOperationalLimits(Class)} instead.
-         */
-        @Deprecated
-        default CurrentLimitsAdder newCurrentLimits() {
-            return newOperationalLimits(CurrentLimitsAdder.class);
+        CurrentLimitsAdder newCurrentLimits();
+
+        default ApparentPowerLimitsAdder newApparentPowerLimits() {
+            throw new UnsupportedOperationException();
+        }
+
+        default VoltageLimitsAdder newVoltageLimitsAdder() {
+            throw new UnsupportedOperationException();
         }
 
         default List<OperationalLimits> getOperationalLimits() {
@@ -296,13 +298,6 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
 
         default <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
             return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits() : null;
-        }
-
-        default <A extends OperationalLimitsAdder> A newOperationalLimits(Class<A> limitClazz) {
-            if (limitClazz == CurrentLimitsAdder.class) {
-                return (A) newCurrentLimits();
-            }
-            throw new UnsupportedOperationException();
         }
 
         /**

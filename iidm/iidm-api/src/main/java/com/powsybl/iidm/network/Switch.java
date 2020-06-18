@@ -65,7 +65,15 @@ public interface Switch extends Identifiable<Switch> {
         return null;
     }
 
-    default <A extends OperationalLimitsAdder> A newOperationalLimits1(Class<A> limitClazz) {
+    default CurrentLimitsAdder newCurrentLimits1() {
+        throw new UnsupportedOperationException();
+    }
+
+    default ApparentPowerLimitsAdder newApparentPowerLimits1() {
+        throw new UnsupportedOperationException();
+    }
+
+    default VoltageLimitsAdder newVoltageLimits1() {
         throw new UnsupportedOperationException();
     }
 
@@ -77,7 +85,15 @@ public interface Switch extends Identifiable<Switch> {
         return null;
     }
 
-    default <A extends OperationalLimitsAdder> A newOperationalLimits2(Class<A> limitClazz) {
+    default CurrentLimitsAdder newCurrentLimits2() {
+        throw new UnsupportedOperationException();
+    }
+
+    default ApparentPowerLimitsAdder newApparentPowerLimits2() {
+        throw new UnsupportedOperationException();
+    }
+
+    default VoltageLimitsAdder newVoltageLimits2() {
         throw new UnsupportedOperationException();
     }
 }

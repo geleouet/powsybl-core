@@ -4,18 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-package com.powsybl.iidm.network;
+package com.powsybl.iidm.network.impl;
+
+import com.powsybl.iidm.network.LimitType;
+import com.powsybl.iidm.network.OperationalLimits;
 
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-public interface OperationalLimitAdderProvider<L extends OperationalLimits, A extends OperationalLimitsAdder<L>> {
+interface OperationalLimitsOwner<SIDE> {
 
-    Class<? extends A> getAdderClass();
-
-    <B extends Branch<B>> A newAdder(B holder);
-
-    <I extends Injection<I>> A newAdder(I holder);
-
-    A newAdder(Switch holder);
+    void setOperationalLimits(SIDE side, LimitType limitType, OperationalLimits operationalLimits);
 }

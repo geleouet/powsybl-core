@@ -153,12 +153,22 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
         return getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class);
     }
 
-    /**
-     * @deprecated Use {@link #newOperationalLimits1(Class)} instead.
-     */
-    @Deprecated
-    default CurrentLimitsAdder newCurrentLimits1() {
-        return newOperationalLimits1(CurrentLimitsAdder.class);
+    default List<OperationalLimits> getOperationalLimits1() {
+        return Collections.singletonList(getCurrentLimits1());
+    }
+
+    default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
+        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits1() : null;
+    }
+
+    CurrentLimitsAdder newCurrentLimits1();
+
+    default ApparentPowerLimitsAdder newApparentPowerLimits1() {
+        throw new UnsupportedOperationException();
+    }
+
+    default VoltageLimitsAdder newVoltageLimits1() {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -169,29 +179,6 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
         return getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class);
     }
 
-    /**
-     * @deprecated Use {@link #newOperationalLimits2(Class)} instead.
-     */
-    @Deprecated
-    default CurrentLimitsAdder newCurrentLimits2() {
-        return newOperationalLimits2(CurrentLimitsAdder.class);
-    }
-
-    default List<OperationalLimits> getOperationalLimits1() {
-        return Collections.singletonList(getCurrentLimits1());
-    }
-
-    default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
-        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits1() : null;
-    }
-
-    default <A extends OperationalLimitsAdder> A newOperationalLimits1(Class<A> limitClazz) {
-        if (limitClazz == CurrentLimitsAdder.class) {
-            return (A) newCurrentLimits1();
-        }
-        throw new UnsupportedOperationException();
-    }
-
     default List<OperationalLimits> getOperationalLimits2() {
         return Collections.singletonList(getCurrentLimits2());
     }
@@ -200,10 +187,13 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
         return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits2() : null;
     }
 
-    default <A extends OperationalLimitsAdder> A newOperationalLimits2(Class<A> limitClazz) {
-        if (limitClazz == CurrentLimitsAdder.class) {
-            return (A) newCurrentLimits2();
-        }
+    CurrentLimitsAdder newCurrentLimits2();
+
+    default ApparentPowerLimitsAdder newApparentPowerLimits2() {
+        throw new UnsupportedOperationException();
+    }
+
+    default VoltageLimitsAdder newVoltageLimits2() {
         throw new UnsupportedOperationException();
     }
 

@@ -285,14 +285,6 @@ public interface DanglingLine extends Injection<DanglingLine> {
         return getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
     }
 
-    /**
-     * @deprecated Use {@link #newOperationalLimits(Class)} instead.
-     */
-    @Deprecated
-    default CurrentLimitsAdder newCurrentLimits() {
-        return newOperationalLimits(CurrentLimitsAdder.class);
-    }
-
     @Override
     default List<OperationalLimits> getOperationalLimits() {
         return Collections.singletonList(getCurrentLimits());
@@ -301,13 +293,5 @@ public interface DanglingLine extends Injection<DanglingLine> {
     @Override
     default <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
         return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits() : null;
-    }
-
-    @Override
-    default <A extends OperationalLimitsAdder> A newOperationalLimits(Class<A> limitClazz) {
-        if (limitClazz == CurrentLimitsAdder.class) {
-            return (A) newCurrentLimits();
-        }
-        throw new UnsupportedOperationException();
     }
 }

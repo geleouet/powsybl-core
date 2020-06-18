@@ -29,7 +29,15 @@ public interface Injection<I extends Injection<I>> extends Connectable<I> {
         return null;
     }
 
-    default <A extends OperationalLimitsAdder> A newOperationalLimits(Class<A> limitClazz) {
+    default CurrentLimitsAdder newCurrentLimits() {
+        throw new UnsupportedOperationException();
+    }
+
+    default ApparentPowerLimitsAdder newApparentPowerLimits() {
+        throw new UnsupportedOperationException();
+    }
+
+    default VoltageLimitsAdder newVoltageLimits() {
         throw new UnsupportedOperationException();
     }
 }
