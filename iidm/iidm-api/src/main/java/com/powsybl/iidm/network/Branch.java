@@ -143,7 +143,18 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
 
     Side getSide(Terminal terminal);
 
-    CurrentLimits getCurrentLimits(Side side);
+    /**
+     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} or {@link #getOperationalLimits2(LimitType, Class)} instead.
+     */
+    @Deprecated
+    default CurrentLimits getCurrentLimits(Side side) {
+        if (side == Side.ONE) {
+            return getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class);
+        } else if (side == Side.TWO) {
+            return getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class);
+        }
+        throw new AssertionError("Unexpected side: " + side);
+    }
 
     /**
      * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} instead.
