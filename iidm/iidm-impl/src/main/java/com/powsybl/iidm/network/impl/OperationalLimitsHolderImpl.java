@@ -32,11 +32,11 @@ class OperationalLimitsHolderImpl implements OperationalLimitsOwner {
         identifiable.getNetwork().getListeners().notifyUpdate(identifiable, attributeName + "_" + limitType, oldValue, operationalLimits);
     }
 
-    public List<OperationalLimits> getOperationalLimits() {
+    List<OperationalLimits> getOperationalLimits() {
         return new ArrayList<>(operationalLimits.values());
     }
 
-    public <L extends OperationalLimits> L getOperationalLimits(LimitType type, Class<L> limitClazz) {
+    <L extends OperationalLimits> L getOperationalLimits(LimitType type, Class<L> limitClazz) {
         if (type == null) {
             throw new IllegalArgumentException("limit type is null");
         }
@@ -47,16 +47,16 @@ class OperationalLimitsHolderImpl implements OperationalLimitsOwner {
         throw new AssertionError("Unexpected class for operational limits of type " + type + ". Expected: " + operationalLimits.getClass().getName() + ", actual: " + limitClazz.getName() + ".");
     }
 
-    public CurrentLimitsAdder newCurrentLimits() {
+    CurrentLimitsAdder newCurrentLimits() {
         return new CurrentLimitsAdderImpl(this);
     }
 
-    public ApparentPowerLimitsAdder newApparentPowerLimits() {
-        return null;
+    ApparentPowerLimitsAdder newApparentPowerLimits() {
+        return new ApparentPowerLimitsAdderImpl(this);
     }
 
-    public VoltageLimitsAdder newVoltageLimits() {
-        return null;
+    VoltageLimitsAdder newVoltageLimits() {
+        return new VoltageLimitsAdderImpl(this);
     }
 
     @Override
