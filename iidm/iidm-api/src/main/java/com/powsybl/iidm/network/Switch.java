@@ -6,12 +6,15 @@
  */
 package com.powsybl.iidm.network;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A switch to connect equipments in a substation.
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public interface Switch extends Identifiable<Switch>, OperationalLimitsTwoSidesHolder {
+public interface Switch extends Identifiable<Switch> {
 
     /**
      * Get the parent voltage level.
@@ -53,4 +56,28 @@ public interface Switch extends Identifiable<Switch>, OperationalLimitsTwoSidesH
      * @param retained the retain status of the switch
      */
     void setRetained(boolean retained);
+
+    default List<OperationalLimits> getOperationalLimits1() {
+        return Collections.emptyList();
+    }
+
+    default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
+        return null;
+    }
+
+    default <A extends OperationalLimitsAdder> A newOperationalLimits1(Class<A> limitClazz) {
+        throw new UnsupportedOperationException();
+    }
+
+    default List<OperationalLimits> getOperationalLimits2() {
+        return Collections.emptyList();
+    }
+
+    default <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
+        return null;
+    }
+
+    default <A extends OperationalLimitsAdder> A newOperationalLimits2(Class<A> limitClazz) {
+        throw new UnsupportedOperationException();
+    }
 }

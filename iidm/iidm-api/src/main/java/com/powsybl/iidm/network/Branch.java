@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public interface Branch<I extends Branch<I>> extends Connectable<I>, OperationalLimitsTwoSidesHolder {
+public interface Branch<I extends Branch<I>> extends Connectable<I> {
 
     enum Side {
         ONE,
@@ -177,17 +177,14 @@ public interface Branch<I extends Branch<I>> extends Connectable<I>, Operational
         return newOperationalLimits2(CurrentLimitsAdder.class);
     }
 
-    @Override
     default List<OperationalLimits> getOperationalLimits1() {
         return Collections.singletonList(getCurrentLimits1());
     }
 
-    @Override
     default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
         return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits1() : null;
     }
 
-    @Override
     default <A extends OperationalLimitsAdder> A newOperationalLimits1(Class<A> limitClazz) {
         if (limitClazz == CurrentLimitsAdder.class) {
             return (A) newCurrentLimits1();
@@ -195,17 +192,14 @@ public interface Branch<I extends Branch<I>> extends Connectable<I>, Operational
         throw new UnsupportedOperationException();
     }
 
-    @Override
     default List<OperationalLimits> getOperationalLimits2() {
         return Collections.singletonList(getCurrentLimits2());
     }
 
-    @Override
     default <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
         return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits2() : null;
     }
 
-    @Override
     default <A extends OperationalLimitsAdder> A newOperationalLimits2(Class<A> limitClazz) {
         if (limitClazz == CurrentLimitsAdder.class) {
             return (A) newCurrentLimits2();

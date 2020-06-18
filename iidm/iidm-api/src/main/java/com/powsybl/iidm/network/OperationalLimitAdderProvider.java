@@ -9,9 +9,13 @@ package com.powsybl.iidm.network;
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-public interface OperationalLimitAdderProvider<H extends OperationalLimitsHolder, L extends OperationalLimits, A extends OperationalLimitsAdder<L>> {
+public interface OperationalLimitAdderProvider<L extends OperationalLimits, A extends OperationalLimitsAdder<L>> {
 
     Class<? extends A> getAdderClass();
 
-    A newAdder(H holder);
+    <B extends Branch<B>> A newAdder(B holder);
+
+    <I extends Injection<I>> A newAdder(I holder);
+
+    A newAdder(Switch holder);
 }

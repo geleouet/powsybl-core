@@ -209,7 +209,7 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
      *     </tbody>
      * </table>
      */
-    public interface Leg extends RatioTapChangerHolder, PhaseTapChangerHolder, OperationalLimitsNoSideHolder {
+    public interface Leg extends RatioTapChangerHolder, PhaseTapChangerHolder {
 
         /**
          * Get the terminal the leg is connected to.
@@ -290,17 +290,14 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
             return newOperationalLimits(CurrentLimitsAdder.class);
         }
 
-        @Override
         default List<OperationalLimits> getOperationalLimits() {
             return Collections.singletonList(getCurrentLimits());
         }
 
-        @Override
         default <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
             return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits() : null;
         }
 
-        @Override
         default <A extends OperationalLimitsAdder> A newOperationalLimits(Class<A> limitClazz) {
             if (limitClazz == CurrentLimitsAdder.class) {
                 return (A) newCurrentLimits();
