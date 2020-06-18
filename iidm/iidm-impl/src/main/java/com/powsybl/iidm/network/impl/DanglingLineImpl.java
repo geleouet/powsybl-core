@@ -18,7 +18,7 @@ import java.util.Objects;
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-class DanglingLineImpl extends AbstractConnectable<DanglingLine> implements DanglingLine, CurrentLimitsOwner<Void> {
+class DanglingLineImpl extends AbstractInjection<DanglingLine> implements DanglingLine {
 
     static class GenerationImpl implements Generation, ReactiveLimitsOwner, Validable {
 
@@ -242,9 +242,6 @@ class DanglingLineImpl extends AbstractConnectable<DanglingLine> implements Dang
     private final String ucteXnodeCode;
 
     private final GenerationImpl generation;
-
-    private CurrentLimitsImpl limits;
-
     // attributes depending on the variant
 
     private final TDoubleArrayList p0;
@@ -377,25 +374,8 @@ class DanglingLineImpl extends AbstractConnectable<DanglingLine> implements Dang
     }
 
     @Override
-    public Generation getGeneration() {
+    public GenerationImpl getGeneration() {
         return generation;
-    }
-
-    @Override
-    public void setCurrentLimits(Void side, CurrentLimitsImpl limits) {
-        CurrentLimitsImpl oldValue = this.limits;
-        this.limits = limits;
-        notifyUpdate("currentlimits", oldValue, limits);
-    }
-
-    @Override
-    public CurrentLimitsImpl getCurrentLimits() {
-        return limits;
-    }
-
-    @Override
-    public CurrentLimitsAdder newCurrentLimits() {
-        return new CurrentLimitsAdderImpl<>(null, this);
     }
 
     @Override

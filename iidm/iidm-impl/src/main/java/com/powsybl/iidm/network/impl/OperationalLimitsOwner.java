@@ -8,11 +8,12 @@ package com.powsybl.iidm.network.impl;
 
 import com.powsybl.iidm.network.LimitType;
 import com.powsybl.iidm.network.OperationalLimits;
+import com.powsybl.iidm.network.Validable;
 
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-interface OperationalLimitsOwner<SIDE> {
+public interface OperationalLimitsOwner extends Validable {
 
-    void setOperationalLimits(SIDE side, LimitType limitType, OperationalLimits operationalLimits);
+    void setOperationalLimits(LimitType limitType, OperationalLimits operationalLimits);
 }

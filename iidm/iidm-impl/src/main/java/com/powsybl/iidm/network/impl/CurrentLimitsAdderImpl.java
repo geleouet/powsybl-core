@@ -6,11 +6,8 @@
  */
 package com.powsybl.iidm.network.impl;
 
-import com.powsybl.iidm.network.CurrentLimits;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.LoadingLimits.TemporaryLimit;
-import com.powsybl.iidm.network.CurrentLimitsAdder;
-import com.powsybl.iidm.network.ValidationException;
-import com.powsybl.iidm.network.ValidationUtil;
 import com.powsybl.iidm.network.impl.CurrentLimitsImpl.TemporaryLimitImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,21 +21,19 @@ import java.util.stream.Collectors;
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public class CurrentLimitsAdderImpl<S, O extends CurrentLimitsOwner<S>> implements CurrentLimitsAdder {
+public class CurrentLimitsAdderImpl implements CurrentLimitsAdder {
 
     private static final Comparator<Integer> ACCEPTABLE_DURATION_COMPARATOR = (acceptableDuraction1, acceptableDuraction2) -> acceptableDuraction2 - acceptableDuraction1;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CurrentLimitsAdderImpl.class);
 
-    private final S side;
-
-    private final O owner;
+    private final OperationalLimitsOwner owner;
 
     private double permanentLimit = Double.NaN;
 
     private final TreeMap<Integer, TemporaryLimit> temporaryLimits = new TreeMap<>(ACCEPTABLE_DURATION_COMPARATOR);
 
-    public class TemporaryLimitAdderImpl implements TemporaryLimitAdder {
+    public class TemporaryLimitAdderImpl implements TemporaryLimitAdder<CurrentLimitsAdder> {
 
         private String name;
 
@@ -51,37 +46,37 @@ public class CurrentLimitsAdderImpl<S, O extends CurrentLimitsOwner<S>> implemen
         private boolean ensureNameUnicity = false;
 
         @Override
-        public TemporaryLimitAdder setName(String name) {
+        public TemporaryLimitAdder<CurrentLimitsAdder> setName(String name) {
             this.name = name;
             return this;
         }
 
         @Override
-        public TemporaryLimitAdder setValue(double value) {
+        public TemporaryLimitAdder<CurrentLimitsAdder> setValue(double value) {
             this.value = value;
             return this;
         }
 
         @Override
-        public TemporaryLimitAdder setAcceptableDuration(int acceptableDuration) {
+        public TemporaryLimitAdder<CurrentLimitsAdder> setAcceptableDuration(int acceptableDuration) {
             this.acceptableDuration = acceptableDuration;
             return this;
         }
 
         @Override
-        public TemporaryLimitAdder setFictitious(boolean fictitious) {
+        public TemporaryLimitAdder<CurrentLimitsAdder> setFictitious(boolean fictitious) {
             this.fictitious = fictitious;
             return this;
         }
 
         @Override
-        public TemporaryLimitAdder ensureNameUnicity() {
+        public TemporaryLimitAdder<CurrentLimitsAdder> ensureNameUnicity() {
             this.ensureNameUnicity = true;
             return this;
         }
 
         @Override
-        public CurrentLimitsAdder endTemporaryLimit() {
+        public CurrentLimitsAdderImpl endTemporaryLimit() {
             if (Double.isNaN(value)) {
                 throw new ValidationException(owner, "temporary limit value is not set");
             }
@@ -119,8 +114,15 @@ public class CurrentLimitsAdderImpl<S, O extends CurrentLimitsOwner<S>> implemen
         }
     }
 
-    public CurrentLimitsAdderImpl(S side, O owner) {
-        this.side = side;
+    /**
+     * @deprecated Use {@link #CurrentLimitsAdderImpl(OperationalLimitsOwner)} instead.
+     */
+    @Deprecated
+    public <S, O extends CurrentLimitsOwner<S>> CurrentLimitsAdderImpl(S side, O owner) {
+        this.owner = owner;
+    }
+
+    public CurrentLimitsAdderImpl(OperationalLimitsOwner owner) {
         this.owner = owner;
     }
 
@@ -141,12 +143,7 @@ public class CurrentLimitsAdderImpl<S, O extends CurrentLimitsOwner<S>> implemen
     }
 
     @Override
-    public boolean hasTemporaryLimits() {
-        return !temporaryLimits.isEmpty();
-    }
-
-    @Override
-    public TemporaryLimitAdder beginTemporaryLimit() {
+    public TemporaryLimitAdder<CurrentLimitsAdder> beginTemporaryLimit() {
         return new TemporaryLimitAdderImpl();
     }
 
@@ -180,7 +177,7 @@ public class CurrentLimitsAdderImpl<S, O extends CurrentLimitsOwner<S>> implemen
         ValidationUtil.checkPermanentLimit(owner, permanentLimit);
         checkTemporaryLimits();
         CurrentLimitsImpl limits = new CurrentLimitsImpl(permanentLimit, temporaryLimits, owner);
-        owner.setCurrentLimits(side, limits);
+        owner.setOperationalLimits(LimitType.CURRENT, limits);
         return limits;
     }
 

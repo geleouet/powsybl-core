@@ -8,10 +8,7 @@ package com.powsybl.iidm.network.impl;
 
 import com.powsybl.iidm.network.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -21,7 +18,7 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
     implements ThreeWindingsTransformer {
 
     static class LegImpl
-        implements Validable, CurrentLimitsOwner<Void>, Leg, RatioTapChangerParent, PhaseTapChangerParent {
+        implements Validable, Leg, RatioTapChangerParent, PhaseTapChangerParent {
 
         protected ThreeWindingsTransformerImpl transformer;
 
@@ -37,7 +34,7 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
 
         private double ratedS;
 
-        private CurrentLimits limits;
+        private OperationalLimitsHolderImpl operationalLimitsHolder;
 
         private RatioTapChangerImpl ratioTapChanger;
 
@@ -57,6 +54,7 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
 
         void setTransformer(ThreeWindingsTransformerImpl transformer) {
             this.transformer = transformer;
+            operationalLimitsHolder = new OperationalLimitsHolderImpl("limits" + legNumber, transformer);
         }
 
         public TerminalExt getTerminal() {
@@ -139,22 +137,12 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
             return ratioTapChanger;
         }
 
-        @Override
-        public Optional<RatioTapChanger> getOptionalRatioTapChanger() {
-            return Optional.ofNullable(ratioTapChanger);
-        }
-
         public PhaseTapChangerAdderImpl newPhaseTapChanger() {
             return new PhaseTapChangerAdderImpl(this);
         }
 
         public PhaseTapChangerImpl getPhaseTapChanger() {
             return phaseTapChanger;
-        }
-
-        @Override
-        public Optional<PhaseTapChanger> getOptionalPhaseTapChanger() {
-            return Optional.ofNullable(phaseTapChanger);
         }
 
         @Override
@@ -178,19 +166,28 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
                 phaseTapChanger);
         }
 
-        @Override
-        public void setCurrentLimits(Void side, CurrentLimitsImpl limits) {
-            CurrentLimits oldValue = this.limits;
-            this.limits = limits;
-            transformer.notifyUpdate(() -> getLegAttribute() + ".currentLimits", oldValue, x);
-        }
-
-        public CurrentLimits getCurrentLimits() {
-            return limits;
-        }
-
         public CurrentLimitsAdder newCurrentLimits() {
-            return new CurrentLimitsAdderImpl<>(null, this);
+            return operationalLimitsHolder.newCurrentLimits();
+        }
+
+        @Override
+        public ApparentPowerLimitsAdder newApparentPowerLimits() {
+            return operationalLimitsHolder.newApparentPowerLimits();
+        }
+
+        @Override
+        public VoltageLimitsAdder newVoltageLimitsAdder() {
+            return operationalLimitsHolder.newVoltageLimits();
+        }
+
+        @Override
+        public List<OperationalLimits> getOperationalLimits() {
+            return operationalLimitsHolder.getOperationalLimits();
+        }
+
+        @Override
+        public <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
+            return operationalLimitsHolder.getOperationalLimits(limitType, limitClazz);
         }
 
         protected String getTypeDescription() {

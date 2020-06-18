@@ -22,7 +22,7 @@ public class CurrentLimitsImpl implements CurrentLimits {
 
     private final TreeMap<Integer, TemporaryLimit> temporaryLimits;
 
-    private final CurrentLimitsOwner<?> owner;
+    private final OperationalLimitsOwner owner;
 
     static class TemporaryLimitImpl implements TemporaryLimit {
 
@@ -62,7 +62,7 @@ public class CurrentLimitsImpl implements CurrentLimits {
         }
     }
 
-    CurrentLimitsImpl(double permanentLimit, TreeMap<Integer, TemporaryLimit> temporaryLimits, CurrentLimitsOwner<?> owner) {
+    CurrentLimitsImpl(double permanentLimit, TreeMap<Integer, TemporaryLimit> temporaryLimits, OperationalLimitsOwner owner) {
         this.permanentLimit = permanentLimit;
         this.temporaryLimits = Objects.requireNonNull(temporaryLimits);
         this.owner = Objects.requireNonNull(owner);
