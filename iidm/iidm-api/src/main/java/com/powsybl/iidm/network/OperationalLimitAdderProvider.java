@@ -9,10 +9,9 @@ package com.powsybl.iidm.network;
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-public interface ApparentPowerLimits extends LoadingLimits {
+public interface OperationalLimitAdderProvider<H extends OperationalLimitsHolder, L extends OperationalLimits, A extends OperationalLimitsAdder<L>> {
 
-    @Override
-    default LimitType getLimitType() {
-        return LimitType.APPARENT_POWER;
-    }
+    Class<? extends A> getAdderClass();
+
+    A newAdder(H holder);
 }

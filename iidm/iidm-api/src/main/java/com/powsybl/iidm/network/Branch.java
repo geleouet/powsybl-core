@@ -6,6 +6,9 @@
  */
 package com.powsybl.iidm.network;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * An equipment with two terminals.
  *
@@ -94,7 +97,7 @@ package com.powsybl.iidm.network;
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public interface Branch<I extends Branch<I>> extends Connectable<I> {
+public interface Branch<I extends Branch<I>> extends Connectable<I>, OperationalLimitsTwoSidesHolder {
 
     enum Side {
         ONE,
@@ -142,13 +145,73 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
 
     CurrentLimits getCurrentLimits(Side side);
 
-    CurrentLimits getCurrentLimits1();
+    /**
+     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} instead.
+     */
+    @Deprecated
+    default CurrentLimits getCurrentLimits1() {
+        return getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class);
+    }
 
-    CurrentLimitsAdder newCurrentLimits1();
+    /**
+     * @deprecated Use {@link #newOperationalLimits1(Class)} instead.
+     */
+    @Deprecated
+    default CurrentLimitsAdder newCurrentLimits1() {
+        return newOperationalLimits1(CurrentLimitsAdder.class);
+    }
 
-    CurrentLimits getCurrentLimits2();
+    /**
+     * @deprecated Use {@link #getOperationalLimits2(LimitType, Class)} instead.
+     */
+    @Deprecated
+    default CurrentLimits getCurrentLimits2() {
+        return getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class);
+    }
 
-    CurrentLimitsAdder newCurrentLimits2();
+    /**
+     * @deprecated Use {@link #newOperationalLimits2(Class)} instead.
+     */
+    @Deprecated
+    default CurrentLimitsAdder newCurrentLimits2() {
+        return newOperationalLimits2(CurrentLimitsAdder.class);
+    }
+
+    @Override
+    default List<OperationalLimits> getOperationalLimits1() {
+        return Collections.singletonList(getCurrentLimits1());
+    }
+
+    @Override
+    default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
+        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits1() : null;
+    }
+
+    @Override
+    default <A extends OperationalLimitsAdder> A newOperationalLimits1(Class<A> limitClazz) {
+        if (limitClazz == CurrentLimitsAdder.class) {
+            return (A) newCurrentLimits1();
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    default List<OperationalLimits> getOperationalLimits2() {
+        return Collections.singletonList(getCurrentLimits2());
+    }
+
+    @Override
+    default <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
+        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits2() : null;
+    }
+
+    @Override
+    default <A extends OperationalLimitsAdder> A newOperationalLimits2(Class<A> limitClazz) {
+        if (limitClazz == CurrentLimitsAdder.class) {
+            return (A) newCurrentLimits2();
+        }
+        throw new UnsupportedOperationException();
+    }
 
     boolean isOverloaded();
 

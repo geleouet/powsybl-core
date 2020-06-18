@@ -32,7 +32,7 @@ import com.powsybl.commons.extensions.Extension;
 import com.powsybl.commons.io.table.Column;
 import com.powsybl.commons.io.table.TableFormatter;
 import com.powsybl.commons.util.StringToIntMapper;
-import com.powsybl.iidm.network.CurrentLimits.TemporaryLimit;
+import com.powsybl.iidm.network.LoadingLimits.TemporaryLimit;
 import com.powsybl.iidm.network.HvdcConverterStation.HvdcType;
 import com.powsybl.iidm.network.StaticVarCompensator.RegulationMode;
 import com.powsybl.iidm.network.util.ConnectedComponents;

@@ -6,6 +6,9 @@
  */
 package com.powsybl.iidm.network;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A dangling line to model boundaries (X nodes).
  * <p>A dangling line is a component that aggregates a line chunk and a constant
@@ -274,8 +277,37 @@ public interface DanglingLine extends Injection<DanglingLine> {
      */
     String getUcteXnodeCode();
 
-    CurrentLimits getCurrentLimits();
+    /**
+     * @deprecated Use {@link #getOperationalLimits(LimitType, Class)} instead.
+     */
+    @Deprecated
+    default CurrentLimits getCurrentLimits() {
+        return getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
+    }
 
-    CurrentLimitsAdder newCurrentLimits();
+    /**
+     * @deprecated Use {@link #newOperationalLimits(Class)} instead.
+     */
+    @Deprecated
+    default CurrentLimitsAdder newCurrentLimits() {
+        return newOperationalLimits(CurrentLimitsAdder.class);
+    }
 
+    @Override
+    default List<OperationalLimits> getOperationalLimits() {
+        return Collections.singletonList(getCurrentLimits());
+    }
+
+    @Override
+    default <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
+        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits() : null;
+    }
+
+    @Override
+    default <A extends OperationalLimitsAdder> A newOperationalLimits(Class<A> limitClazz) {
+        if (limitClazz == CurrentLimitsAdder.class) {
+            return (A) newCurrentLimits();
+        }
+        throw new UnsupportedOperationException();
+    }
 }

@@ -8,4 +8,12 @@ public interface OperationalLimits {
      */
     String getUnit();
 
+    /**
+     * Get the operational limits' type (can be APPARENT_POWER, CURRENT or VOLTAGE)
+     */
+    LimitType getLimitType();
+
+    default void remove() {
+        // do nothing
+    }
 }

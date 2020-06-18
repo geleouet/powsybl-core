@@ -46,7 +46,7 @@ public interface LoadingLimits extends OperationalLimits {
      * @param permanentLimit the permanent limit
      * @return itself for method chaining
      */
-    CurrentLimits setPermanentLimit(double permanentLimit);
+    LoadingLimits setPermanentLimit(double permanentLimit);
 
     /**
      * Get a list of temporary limits ordered by descending duration.

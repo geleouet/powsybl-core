@@ -9,10 +9,18 @@ package com.powsybl.iidm.network;
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-public interface ApparentPowerLimits extends LoadingLimits {
+public interface VoltageLimits extends OperationalLimits {
 
     @Override
     default LimitType getLimitType() {
-        return LimitType.APPARENT_POWER;
+        return LimitType.VOLTAGE;
     }
+
+    double getHighVoltage();
+
+    VoltageLimits setHighVoltage(double highVoltage);
+
+    double getLowVoltage();
+
+    VoltageLimits setLowVoltage(double lowVoltage);
 }

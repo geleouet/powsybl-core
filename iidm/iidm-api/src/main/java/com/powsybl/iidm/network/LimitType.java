@@ -9,10 +9,8 @@ package com.powsybl.iidm.network;
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-public interface ApparentPowerLimits extends LoadingLimits {
-
-    @Override
-    default LimitType getLimitType() {
-        return LimitType.APPARENT_POWER;
-    }
+public enum LimitType {
+    APPARENT_POWER,
+    CURRENT,
+    VOLTAGE
 }

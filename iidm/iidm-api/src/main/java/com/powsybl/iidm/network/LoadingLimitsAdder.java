@@ -10,14 +10,28 @@ package com.powsybl.iidm.network;
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public interface LoadingLimitsAdder {
+public interface LoadingLimitsAdder<L extends LoadingLimits, A extends LoadingLimitsAdder<L, A>> extends OperationalLimitsAdder<L> {
 
-    default double getPermanentLimit() {
-        return Double.NaN;
+    interface TemporaryLimitAdder<A> {
+
+        TemporaryLimitAdder<A> setName(String name);
+
+        TemporaryLimitAdder<A> setValue(double value);
+
+        TemporaryLimitAdder<A> setAcceptableDuration(int duration);
+
+        TemporaryLimitAdder<A> setFictitious(boolean fictitious);
+
+        TemporaryLimitAdder<A> ensureNameUnicity();
+
+        A endTemporaryLimit();
     }
 
-    default double getTemporaryLimitValue(int acceptableDuration) {
-        return Double.NaN;
-    }
+    A setPermanentLimit(double limit);
 
+    TemporaryLimitAdder<A> beginTemporaryLimit();
+
+    double getPermanentLimit();
+
+    double getTemporaryLimitValue(int acceptableDuration);
 }

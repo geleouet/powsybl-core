@@ -6,6 +6,9 @@
  */
 package com.powsybl.iidm.network;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A Three Windings Power Transformer.
  * <p>
@@ -206,7 +209,7 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
      *     </tbody>
      * </table>
      */
-    public interface Leg extends RatioTapChangerHolder, PhaseTapChangerHolder {
+    public interface Leg extends RatioTapChangerHolder, PhaseTapChangerHolder, OperationalLimitsNoSideHolder {
 
         /**
          * Get the terminal the leg is connected to.
@@ -271,9 +274,39 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
          */
         Leg setRatedU(double ratedU);
 
-        CurrentLimits getCurrentLimits();
+        /**
+         * @deprecated Use {@link #getOperationalLimits(LimitType, Class)} instead.
+         */
+        @Deprecated
+        default CurrentLimits getCurrentLimits() {
+            return getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
+        }
 
-        CurrentLimitsAdder newCurrentLimits();
+        /**
+         * @deprecated Use {@link #newOperationalLimits(Class)} instead.
+         */
+        @Deprecated
+        default CurrentLimitsAdder newCurrentLimits() {
+            return newOperationalLimits(CurrentLimitsAdder.class);
+        }
+
+        @Override
+        default List<OperationalLimits> getOperationalLimits() {
+            return Collections.singletonList(getCurrentLimits());
+        }
+
+        @Override
+        default <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
+            return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits() : null;
+        }
+
+        @Override
+        default <A extends OperationalLimitsAdder> A newOperationalLimits(Class<A> limitClazz) {
+            if (limitClazz == CurrentLimitsAdder.class) {
+                return (A) newCurrentLimits();
+            }
+            throw new UnsupportedOperationException();
+        }
 
         /**
          * Get the normal apparent power rating in MVA (optional).
