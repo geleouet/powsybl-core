@@ -18,10 +18,10 @@ import java.util.List;
 class OperationalLimitsHolderImpl implements OperationalLimitsOwner {
 
     private final EnumMap<LimitType, OperationalLimits> operationalLimits = new EnumMap<>(LimitType.class);
-    private final AbstractIdentifiable identifiable;
+    private final AbstractIdentifiable<?> identifiable;
     private final String attributeName;
 
-    OperationalLimitsHolderImpl(String attributeName, AbstractIdentifiable identifiable) {
+    OperationalLimitsHolderImpl(String attributeName, AbstractIdentifiable<?> identifiable) {
         this.identifiable = identifiable;
         this.attributeName = attributeName;
     }
@@ -40,11 +40,11 @@ class OperationalLimitsHolderImpl implements OperationalLimitsOwner {
         if (type == null) {
             throw new IllegalArgumentException("limit type is null");
         }
-        OperationalLimits operationalLimits = this.operationalLimits.get(type);
-        if (operationalLimits == null || limitClazz.isInstance(operationalLimits)) {
-            return (L) operationalLimits;
+        OperationalLimits ol = this.operationalLimits.get(type);
+        if (ol == null || limitClazz.isInstance(ol)) {
+            return (L) ol;
         }
-        throw new AssertionError("Unexpected class for operational limits of type " + type + ". Expected: " + operationalLimits.getClass().getName() + ", actual: " + limitClazz.getName() + ".");
+        throw new AssertionError("Unexpected class for operational limits of type " + type + ". Expected: " + ol.getClass().getName() + ", actual: " + limitClazz.getName() + ".");
     }
 
     CurrentLimitsAdder newCurrentLimits() {
