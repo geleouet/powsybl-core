@@ -9,9 +9,7 @@ package com.powsybl.contingency;
 import com.powsybl.commons.extensions.AbstractExtendable;
 import com.powsybl.contingency.tasks.CompoundModificationTask;
 import com.powsybl.contingency.tasks.ModificationTask;
-import com.powsybl.iidm.network.Branch;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +96,14 @@ public class Contingency extends AbstractExtendable<Contingency> {
                     valid = checkBusbarSectionContingency(this, (BusbarSectionContingency) element, network);
                     break;
 
+                case LINE:
+                    valid = checkLineContingency(this, (LineContingency) element, network);
+                    break;
+
+                case TWO_WINDINGS_TRANSFORMER:
+                    valid = checkTwoWindingsTransformerContingency(this, (TwoWindingsTransformerContingency) element, network);
+                    break;
+
                 default:
                     throw new AssertionError("Unknown contingency element type " + element.getType());
             }
@@ -138,6 +144,28 @@ public class Contingency extends AbstractExtendable<Contingency> {
                 !(element.getVoltageLevelId().equals(branch.getTerminal1().getVoltageLevel().getId()) ||
                         element.getVoltageLevelId().equals(branch.getTerminal2().getVoltageLevel().getId())))) {
             LOGGER.warn("Branch '{}' of contingency '{}' not found", element.getId(), contingency.getId());
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean checkLineContingency(Contingency contingency, LineContingency element, Network network) {
+        Line line = network.getLine(element.getId());
+        if (line == null || (element.getVoltageLevelId() != null &&
+                !(element.getVoltageLevelId().equals(line.getTerminal1().getVoltageLevel().getId()) ||
+                        element.getVoltageLevelId().equals(line.getTerminal2().getVoltageLevel().getId())))) {
+            LOGGER.warn("Line '{}' of contingency '{}' not found", element.getId(), contingency.getId());
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean checkTwoWindingsTransformerContingency(Contingency contingency, TwoWindingsTransformerContingency element, Network network) {
+        TwoWindingsTransformer twt = network.getTwoWindingsTransformer(element.getId());
+        if (twt == null || (element.getVoltageLevelId() != null &&
+                !(element.getVoltageLevelId().equals(twt.getTerminal1().getVoltageLevel().getId()) ||
+                        element.getVoltageLevelId().equals(twt.getTerminal2().getVoltageLevel().getId())))) {
+            LOGGER.warn("TwoWindingsTransformer '{}' of contingency '{}' not found", element.getId(), contingency.getId());
             return false;
         }
         return true;
@@ -191,13 +219,11 @@ public class Contingency extends AbstractExtendable<Contingency> {
     }
 
     public static Contingency line(String id) {
-        // FIXME(mathbagu): Check that the ID is really a line, not a two windings transformer
-        return new Contingency(id, new BranchContingency(id));
+        return new Contingency(id, new LineContingency(id));
     }
 
     public static Contingency line(String id, String voltageLevelId) {
-        // FIXME(mathbagu): Check that the ID is really a line, not a two windings transformer
-        return new Contingency(id, new BranchContingency(id, voltageLevelId));
+        return new Contingency(id, new LineContingency(id, voltageLevelId));
     }
 
     public static Contingency shuntCompensator(String id) {
@@ -209,12 +235,10 @@ public class Contingency extends AbstractExtendable<Contingency> {
     }
 
     public static Contingency twoWindingsTransformer(String id) {
-        // FIXME(mathbagu): Check that the ID is really a two windings transformer, not a line
-        return new Contingency(id, new BranchContingency(id));
+        return new Contingency(id, new TwoWindingsTransformerContingency(id));
     }
 
     public static Contingency twoWindingsTransformer(String id, String voltageLevelId) {
-        // FIXME(mathbagu): Check that the ID is really a two windings transformer, not a line
-        return new Contingency(id, new BranchContingency(id, voltageLevelId));
+        return new Contingency(id, new TwoWindingsTransformerContingency(id, voltageLevelId));
     }
 }
