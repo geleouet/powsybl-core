@@ -43,6 +43,11 @@ abstract class AbstractInjection<I extends Injection<I>> extends AbstractConnect
     }
 
     @Override
+    public ActivePowerLimitsAdder newActivePowerLimits() {
+        return operationalLimitsHolder.newActivePowerLimitsAdder();
+    }
+
+    @Override
     public VoltageLimitsAdder newVoltageLimits() {
         return operationalLimitsHolder.newVoltageLimits();
     }

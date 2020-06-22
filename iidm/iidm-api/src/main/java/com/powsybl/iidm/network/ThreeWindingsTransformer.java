@@ -292,7 +292,7 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
             throw new UnsupportedOperationException();
         }
 
-        default VoltageLimitsAdder newVoltageLimitsAdder() {
+        default VoltageLimitsAdder newVoltageLimits() {
             throw new UnsupportedOperationException();
         }
 

@@ -15,10 +15,10 @@ import java.util.*;
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
 class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTransformer>
-    implements ThreeWindingsTransformer {
+        implements ThreeWindingsTransformer {
 
     static class LegImpl
-        implements Validable, Leg, RatioTapChangerParent, PhaseTapChangerParent {
+            implements Validable, Leg, RatioTapChangerParent, PhaseTapChangerParent {
 
         protected ThreeWindingsTransformerImpl transformer;
 
@@ -155,7 +155,7 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
             RatioTapChangerImpl oldValue = this.ratioTapChanger;
             this.ratioTapChanger = ratioTapChanger;
             transformer.notifyUpdate(() -> getLegAttribute() + "." + getTapChangerAttribute(), oldValue,
-                ratioTapChanger);
+                    ratioTapChanger);
         }
 
         @Override
@@ -163,7 +163,7 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
             PhaseTapChangerImpl oldValue = this.phaseTapChanger;
             this.phaseTapChanger = phaseTapChanger;
             transformer.notifyUpdate(() -> getLegAttribute() + "." + getTapChangerAttribute(), oldValue,
-                phaseTapChanger);
+                    phaseTapChanger);
         }
 
         public CurrentLimitsAdder newCurrentLimits() {
@@ -176,7 +176,12 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
         }
 
         @Override
-        public VoltageLimitsAdder newVoltageLimitsAdder() {
+        public ActivePowerLimitsAdder newActivePowerLimits() {
+            return operationalLimitsHolder.newActivePowerLimitsAdder();
+        }
+
+        @Override
+        public VoltageLimitsAdder newVoltageLimits() {
             return operationalLimitsHolder.newVoltageLimits();
         }
 

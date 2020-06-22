@@ -55,6 +55,10 @@ class OperationalLimitsHolderImpl implements OperationalLimitsOwner {
         return new ApparentPowerLimitsAdderImpl(this);
     }
 
+    ActivePowerLimitsAdder newActivePowerLimitsAdder() {
+        return new ActivePowerLimitsAdderImpl(this);
+    }
+
     VoltageLimitsAdder newVoltageLimits() {
         return new VoltageLimitsAdderImpl(this);
     }

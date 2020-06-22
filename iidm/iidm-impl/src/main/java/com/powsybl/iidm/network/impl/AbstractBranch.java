@@ -102,6 +102,11 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
     }
 
     @Override
+    public ActivePowerLimitsAdder newActivePowerLimits1() {
+        return operationalLimitsHolder1.newActivePowerLimitsAdder();
+    }
+
+    @Override
     public VoltageLimitsAdder newVoltageLimits1() {
         return operationalLimitsHolder1.newVoltageLimits();
     }
@@ -124,6 +129,11 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
     @Override
     public ApparentPowerLimitsAdder newApparentPowerLimits2() {
         return operationalLimitsHolder2.newApparentPowerLimits();
+    }
+
+    @Override
+    public ActivePowerLimitsAdder newActivePowerLimits2() {
+        return operationalLimitsHolder2.newActivePowerLimitsAdder();
     }
 
     @Override
