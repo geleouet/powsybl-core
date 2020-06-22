@@ -37,6 +37,10 @@ public interface Injection<I extends Injection<I>> extends Connectable<I> {
         throw new UnsupportedOperationException();
     }
 
+    default ActivePowerLimitsAdder newActivePowerLimits() {
+        throw new UnsupportedOperationException();
+    }
+
     default VoltageLimitsAdder newVoltageLimits() {
         throw new UnsupportedOperationException();
     }

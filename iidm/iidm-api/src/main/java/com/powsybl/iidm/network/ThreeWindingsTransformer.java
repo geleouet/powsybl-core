@@ -288,6 +288,10 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
             throw new UnsupportedOperationException();
         }
 
+        default ActivePowerLimitsAdder newActivePowerLimits() {
+            throw new UnsupportedOperationException();
+        }
+
         default VoltageLimitsAdder newVoltageLimitsAdder() {
             throw new UnsupportedOperationException();
         }

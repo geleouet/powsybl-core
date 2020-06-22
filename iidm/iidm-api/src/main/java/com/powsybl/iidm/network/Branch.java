@@ -178,6 +178,10 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
         throw new UnsupportedOperationException();
     }
 
+    default ActivePowerLimitsAdder newActivePowerLimits1() {
+        throw new UnsupportedOperationException();
+    }
+
     default VoltageLimitsAdder newVoltageLimits1() {
         throw new UnsupportedOperationException();
     }
@@ -201,6 +205,10 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
     CurrentLimitsAdder newCurrentLimits2();
 
     default ApparentPowerLimitsAdder newApparentPowerLimits2() {
+        throw new UnsupportedOperationException();
+    }
+
+    default ActivePowerLimitsAdder newActivePowerLimits2() {
         throw new UnsupportedOperationException();
     }
 

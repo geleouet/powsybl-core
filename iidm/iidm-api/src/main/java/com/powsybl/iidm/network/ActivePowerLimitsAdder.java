@@ -9,9 +9,5 @@ package com.powsybl.iidm.network;
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-public enum LimitType {
-    ACTIVE_POWER,
-    APPARENT_POWER,
-    CURRENT,
-    VOLTAGE
+public interface ActivePowerLimitsAdder extends LoadingLimitsAdder<ActivePowerLimits, ActivePowerLimitsAdder> {
 }
