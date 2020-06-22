@@ -22,7 +22,7 @@ class ApparentPowerLimitsImpl extends AbstractLoadingLimits<ApparentPowerLimitsI
 
     @Override
     public String getUnit() {
-        return "MW";
+        return "MVA";
     }
 
     @Override

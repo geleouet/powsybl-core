@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public abstract class AbstractCurrentLimitsTest {
 
-    private Network createNetwork() {
+    private static Network createNetwork() {
         Network network = Network.create("test", "test");
         Substation s1 = network.newSubstation()
                 .setId("S1")
