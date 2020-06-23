@@ -43,9 +43,4 @@ class VoltageLimitsImpl implements VoltageLimits {
         this.lowVoltage = lowVoltage;
         return this;
     }
-
-    @Override
-    public String getUnit() {
-        return "kV";
-    }
 }

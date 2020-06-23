@@ -21,11 +21,6 @@ class ActivePowerLimitsImpl extends AbstractLoadingLimits<ActivePowerLimitsImpl>
     }
 
     @Override
-    public String getUnit() {
-        return "MW";
-    }
-
-    @Override
     public void remove() {
         owner.setOperationalLimits(LimitType.ACTIVE_POWER, null);
     }

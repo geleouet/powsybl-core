@@ -21,11 +21,6 @@ public class CurrentLimitsImpl extends AbstractLoadingLimits<CurrentLimitsImpl> 
     }
 
     @Override
-    public String getUnit() {
-        return "A";
-    }
-
-    @Override
     public void remove() {
         owner.setOperationalLimits(LimitType.CURRENT, null);
     }

@@ -21,11 +21,6 @@ class ApparentPowerLimitsImpl extends AbstractLoadingLimits<ApparentPowerLimitsI
     }
 
     @Override
-    public String getUnit() {
-        return "MVA";
-    }
-
-    @Override
     public void remove() {
         owner.setOperationalLimits(LimitType.APPARENT_POWER, null);
     }
