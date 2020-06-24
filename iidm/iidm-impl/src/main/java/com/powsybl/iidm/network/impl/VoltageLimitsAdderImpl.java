@@ -6,9 +6,7 @@
  */
 package com.powsybl.iidm.network.impl;
 
-import com.powsybl.iidm.network.LimitType;
-import com.powsybl.iidm.network.VoltageLimits;
-import com.powsybl.iidm.network.VoltageLimitsAdder;
+import com.powsybl.iidm.network.*;
 
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
@@ -37,7 +35,11 @@ class VoltageLimitsAdderImpl implements VoltageLimitsAdder {
 
     @Override
     public VoltageLimits add() {
-        VoltageLimits voltageLimits = new VoltageLimitsImpl(lowVoltage, highVoltage);
+        if (Double.isNaN(lowVoltage) && Double.isNaN(highVoltage)) {
+            throw new ValidationException(owner, "Either the low or the high voltage limit must be defined.");
+        }
+        ValidationUtil.checkVoltageLimits(owner, lowVoltage, highVoltage);
+        VoltageLimits voltageLimits = new VoltageLimitsImpl(owner, lowVoltage, highVoltage);
         owner.setOperationalLimits(LimitType.VOLTAGE, voltageLimits);
         return voltageLimits;
     }

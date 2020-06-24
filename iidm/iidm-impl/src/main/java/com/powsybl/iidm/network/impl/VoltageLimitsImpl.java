@@ -6,6 +6,8 @@
  */
 package com.powsybl.iidm.network.impl;
 
+import com.powsybl.iidm.network.ValidationException;
+import com.powsybl.iidm.network.ValidationUtil;
 import com.powsybl.iidm.network.VoltageLimits;
 
 /**
@@ -13,10 +15,12 @@ import com.powsybl.iidm.network.VoltageLimits;
  */
 class VoltageLimitsImpl implements VoltageLimits {
 
+    private final OperationalLimitsOwner owner;
     private double highVoltage;
     private double lowVoltage;
 
-    VoltageLimitsImpl(double lowVoltage, double highVoltage) {
+    VoltageLimitsImpl(OperationalLimitsOwner owner, double lowVoltage, double highVoltage) {
+        this.owner = owner;
         this.highVoltage = highVoltage;
         this.lowVoltage = lowVoltage;
     }
@@ -28,8 +32,11 @@ class VoltageLimitsImpl implements VoltageLimits {
 
     @Override
     public VoltageLimits setHighVoltage(double highVoltage) {
+        if (Double.isNaN(lowVoltage) && Double.isNaN(highVoltage)) {
+            throw new ValidationException(owner, "At least the low or the high voltage limit must be defined.");
+        }
+        ValidationUtil.checkVoltageLimits(owner, lowVoltage, highVoltage);
         this.highVoltage = highVoltage;
-
         return this;
     }
 
@@ -40,6 +47,10 @@ class VoltageLimitsImpl implements VoltageLimits {
 
     @Override
     public VoltageLimits setLowVoltage(double lowVoltage) {
+        if (Double.isNaN(lowVoltage) && Double.isNaN(highVoltage)) {
+            throw new ValidationException(owner, "At least the low or the high voltage limit must be defined.");
+        }
+        ValidationUtil.checkVoltageLimits(owner, lowVoltage, highVoltage);
         this.lowVoltage = lowVoltage;
         return this;
     }

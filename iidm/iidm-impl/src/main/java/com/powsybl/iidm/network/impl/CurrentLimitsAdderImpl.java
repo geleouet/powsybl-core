@@ -20,8 +20,7 @@ public class CurrentLimitsAdderImpl extends AbstractLoadingLimitsAdder<CurrentLi
 
     @Override
     public CurrentLimitsImpl add() {
-        ValidationUtil.checkPermanentLimit(owner, permanentLimit);
-        checkTemporaryLimits();
+        checkLoadingLimits();
         CurrentLimitsImpl limits = new CurrentLimitsImpl(permanentLimit, temporaryLimits, owner);
         owner.setOperationalLimits(LimitType.CURRENT, limits);
         return limits;

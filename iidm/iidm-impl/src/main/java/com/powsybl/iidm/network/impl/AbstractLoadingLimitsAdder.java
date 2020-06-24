@@ -9,6 +9,7 @@ package com.powsybl.iidm.network.impl;
 import com.powsybl.iidm.network.LoadingLimits;
 import com.powsybl.iidm.network.LoadingLimitsAdder;
 import com.powsybl.iidm.network.ValidationException;
+import com.powsybl.iidm.network.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -161,5 +162,10 @@ abstract class AbstractLoadingLimitsAdder<L extends LoadingLimits, A extends Loa
                         throw new ValidationException(owner, temporaryLimits1.size() + "temporary limits have the same name " + name);
                     }
                 });
+    }
+
+    protected void checkLoadingLimits() {
+        ValidationUtil.checkPermanentLimit(owner, permanentLimit);
+        checkTemporaryLimits();
     }
 }
