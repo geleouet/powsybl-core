@@ -86,13 +86,39 @@ public class ThreeWindingsTransformerAdapter extends AbstractIdentifiableAdapter
         }
 
         @Override
+        @Deprecated
         public CurrentLimits getCurrentLimits() {
             return getDelegate().getCurrentLimits();
         }
 
         @Override
+        public List<OperationalLimits> getOperationalLimits() {
+            return getDelegate().getOperationalLimits();
+        }
+
+        @Override
+        public  <L extends OperationalLimits> L getOperationalLimits(LimitType type, Class<L> limitClazz) {
+            return getDelegate().getOperationalLimits(type, limitClazz);
+        }
+
+        @Override
         public CurrentLimitsAdder newCurrentLimits() {
             return getDelegate().newCurrentLimits();
+        }
+
+        @Override
+        public ApparentPowerLimitsAdder newApparentPowerLimits() {
+            return getDelegate().newApparentPowerLimits();
+        }
+
+        @Override
+        public ActivePowerLimitsAdder newActivePowerLimits() {
+            return getDelegate().newActivePowerLimits();
+        }
+
+        @Override
+        public VoltageLimitsAdder newVoltageLimits() {
+            return getDelegate().newVoltageLimits();
         }
 
         @Override

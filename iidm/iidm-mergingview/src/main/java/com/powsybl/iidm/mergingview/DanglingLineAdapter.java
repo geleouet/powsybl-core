@@ -97,12 +97,8 @@ public class DanglingLineAdapter extends AbstractInjectionAdapter<DanglingLine> 
     }
 
     @Override
+    @Deprecated
     public CurrentLimits getCurrentLimits() {
         return getDelegate().getCurrentLimits();
-    }
-
-    @Override
-    public CurrentLimitsAdder newCurrentLimits() {
-        return getDelegate().newCurrentLimits();
     }
 }
