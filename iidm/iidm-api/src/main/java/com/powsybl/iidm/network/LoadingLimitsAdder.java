@@ -34,4 +34,6 @@ public interface LoadingLimitsAdder<L extends LoadingLimits, A extends LoadingLi
     double getPermanentLimit();
 
     double getTemporaryLimitValue(int acceptableDuration);
+
+    boolean hasTemporaryLimits();
 }

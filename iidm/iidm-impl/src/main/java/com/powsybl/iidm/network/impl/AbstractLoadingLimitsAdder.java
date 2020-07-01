@@ -139,7 +139,12 @@ abstract class AbstractLoadingLimitsAdder<L extends LoadingLimits, A extends Loa
         return Optional.ofNullable(temporaryLimits.get(acceptableDuration)).map(LoadingLimits.TemporaryLimit::getValue).orElse(Double.NaN);
     }
 
-    protected void checkTemporaryLimits() {
+    @Override
+    public boolean hasTemporaryLimits() {
+        return !temporaryLimits.isEmpty();
+    }
+
+    private void checkTemporaryLimits() {
         // check temporary limits are consistents with permanent
         double previousLimit = Double.NaN;
         for (LoadingLimits.TemporaryLimit tl : temporaryLimits.values()) { // iterate in ascending order
