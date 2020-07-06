@@ -35,10 +35,7 @@ class VoltageLimitsAdderImpl implements VoltageLimitsAdder {
 
     @Override
     public VoltageLimits add() {
-        if (Double.isNaN(lowVoltage) && Double.isNaN(highVoltage)) {
-            throw new ValidationException(owner, "Either the low or the high voltage limit must be defined.");
-        }
-        ValidationUtil.checkVoltageLimits(owner, lowVoltage, highVoltage);
+        ValidationUtil.checkDefinedVoltageLimits(owner, lowVoltage, highVoltage);
         VoltageLimits voltageLimits = new VoltageLimitsImpl(owner, lowVoltage, highVoltage);
         owner.setOperationalLimits(LimitType.VOLTAGE, voltageLimits);
         return voltageLimits;

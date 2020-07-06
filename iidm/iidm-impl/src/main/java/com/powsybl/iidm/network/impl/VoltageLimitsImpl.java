@@ -6,7 +6,6 @@
  */
 package com.powsybl.iidm.network.impl;
 
-import com.powsybl.iidm.network.ValidationException;
 import com.powsybl.iidm.network.ValidationUtil;
 import com.powsybl.iidm.network.VoltageLimits;
 
@@ -31,10 +30,7 @@ class VoltageLimitsImpl extends AbstractOperationalLimits implements VoltageLimi
 
     @Override
     public VoltageLimits setHighVoltage(double highVoltage) {
-        if (Double.isNaN(lowVoltage) && Double.isNaN(highVoltage)) {
-            throw new ValidationException(owner, "At least the low or the high voltage limit must be defined.");
-        }
-        ValidationUtil.checkVoltageLimits(owner, lowVoltage, highVoltage);
+        ValidationUtil.checkDefinedVoltageLimits(owner, lowVoltage, highVoltage);
         this.highVoltage = highVoltage;
         return this;
     }
@@ -46,10 +42,7 @@ class VoltageLimitsImpl extends AbstractOperationalLimits implements VoltageLimi
 
     @Override
     public VoltageLimits setLowVoltage(double lowVoltage) {
-        if (Double.isNaN(lowVoltage) && Double.isNaN(highVoltage)) {
-            throw new ValidationException(owner, "At least the low or the high voltage limit must be defined.");
-        }
-        ValidationUtil.checkVoltageLimits(owner, lowVoltage, highVoltage);
+        ValidationUtil.checkDefinedVoltageLimits(owner, lowVoltage, highVoltage);
         this.lowVoltage = lowVoltage;
         return this;
     }
