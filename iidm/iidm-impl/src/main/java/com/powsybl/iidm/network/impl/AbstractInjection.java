@@ -19,7 +19,7 @@ abstract class AbstractInjection<I extends Injection<I>> extends AbstractConnect
 
     AbstractInjection(String id, String name, boolean fictitious) {
         super(id, name, fictitious);
-        operationalLimitsHolder = new OperationalLimitsHolderImpl("limits", this);
+        operationalLimitsHolder = new OperationalLimitsHolderImpl(this, "limits");
     }
 
     @Override

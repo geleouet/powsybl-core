@@ -25,8 +25,8 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
 
     AbstractBranch(String id, String name, boolean fictitious) {
         super(id, name, fictitious);
-        operationalLimitsHolder1 = new OperationalLimitsHolderImpl("limits1", this);
-        operationalLimitsHolder2 = new OperationalLimitsHolderImpl("limits2", this);
+        operationalLimitsHolder1 = new OperationalLimitsHolderImpl(this, "limits1");
+        operationalLimitsHolder2 = new OperationalLimitsHolderImpl(this, "limits2");
     }
 
     @Override

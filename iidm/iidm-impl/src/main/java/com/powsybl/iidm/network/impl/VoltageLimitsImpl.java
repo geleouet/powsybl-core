@@ -13,14 +13,13 @@ import com.powsybl.iidm.network.VoltageLimits;
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-class VoltageLimitsImpl implements VoltageLimits {
+class VoltageLimitsImpl extends AbstractOperationalLimits implements VoltageLimits {
 
-    private final OperationalLimitsOwner owner;
     private double highVoltage;
     private double lowVoltage;
 
     VoltageLimitsImpl(OperationalLimitsOwner owner, double lowVoltage, double highVoltage) {
-        this.owner = owner;
+        super(owner);
         this.highVoltage = highVoltage;
         this.lowVoltage = lowVoltage;
     }

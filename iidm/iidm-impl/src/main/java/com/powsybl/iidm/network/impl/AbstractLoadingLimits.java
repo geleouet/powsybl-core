@@ -16,13 +16,11 @@ import java.util.TreeMap;
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
  */
-abstract class AbstractLoadingLimits<L extends AbstractLoadingLimits<L>> implements LoadingLimits {
+abstract class AbstractLoadingLimits<L extends AbstractLoadingLimits<L>> extends AbstractOperationalLimits implements LoadingLimits {
 
     private double permanentLimit;
 
     private final TreeMap<Integer, TemporaryLimit> temporaryLimits;
-
-    protected final OperationalLimitsOwner owner;
 
     static class TemporaryLimitImpl implements TemporaryLimit {
 
@@ -62,10 +60,10 @@ abstract class AbstractLoadingLimits<L extends AbstractLoadingLimits<L>> impleme
         }
     }
 
-    AbstractLoadingLimits(double permanentLimit, TreeMap<Integer, TemporaryLimit> temporaryLimits, OperationalLimitsOwner owner) {
+    AbstractLoadingLimits(OperationalLimitsOwner owner, double permanentLimit, TreeMap<Integer, TemporaryLimit> temporaryLimits) {
+        super(owner);
         this.permanentLimit = permanentLimit;
         this.temporaryLimits = Objects.requireNonNull(temporaryLimits);
-        this.owner = Objects.requireNonNull(owner);
     }
 
     @Override

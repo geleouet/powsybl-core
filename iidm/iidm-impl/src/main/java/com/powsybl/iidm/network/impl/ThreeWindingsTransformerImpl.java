@@ -54,7 +54,7 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
 
         void setTransformer(ThreeWindingsTransformerImpl transformer) {
             this.transformer = transformer;
-            operationalLimitsHolder = new OperationalLimitsHolderImpl("limits" + legNumber, transformer);
+            operationalLimitsHolder = new OperationalLimitsHolderImpl(transformer, "limits" + legNumber);
         }
 
         public TerminalExt getTerminal() {

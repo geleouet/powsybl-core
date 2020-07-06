@@ -114,7 +114,7 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
          * In particular, it determines the duration during which
          * the current current value may be sustained.
          */
-        LoadingLimits.TemporaryLimit getTemporaryLimit();
+        CurrentLimits.TemporaryLimit getTemporaryLimit();
 
         /**
          * The value of the current limit which has been overloaded, in Amperes.

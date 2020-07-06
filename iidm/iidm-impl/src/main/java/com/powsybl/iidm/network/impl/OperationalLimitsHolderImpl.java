@@ -11,6 +11,7 @@ import com.powsybl.iidm.network.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Miora Ralambotiana <miora.ralambotiana at rte-france.com>
@@ -21,9 +22,9 @@ class OperationalLimitsHolderImpl implements OperationalLimitsOwner {
     private final AbstractIdentifiable<?> identifiable;
     private final String attributeName;
 
-    OperationalLimitsHolderImpl(String attributeName, AbstractIdentifiable<?> identifiable) {
-        this.identifiable = identifiable;
-        this.attributeName = attributeName;
+    OperationalLimitsHolderImpl(AbstractIdentifiable<?> identifiable, String attributeName) {
+        this.identifiable = Objects.requireNonNull(identifiable);
+        this.attributeName = Objects.requireNonNull(attributeName);
     }
 
     @Override
