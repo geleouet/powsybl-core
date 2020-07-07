@@ -97,7 +97,7 @@ import java.util.List;
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public interface Branch<I extends Branch<I>> extends Connectable<I> {
+public interface Branch<I extends Branch<I>> extends Connectable<I>, OperationalLimitsSidedHolder {
 
     enum Side {
         ONE,
@@ -164,26 +164,14 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
         return getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class);
     }
 
+    @Override
     default List<OperationalLimits> getOperationalLimits1() {
         return Collections.singletonList(getCurrentLimits1());
     }
 
+    @Override
     default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
         return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits1() : null;
-    }
-
-    CurrentLimitsAdder newCurrentLimits1();
-
-    default ApparentPowerLimitsAdder newApparentPowerLimits1() {
-        throw new UnsupportedOperationException();
-    }
-
-    default ActivePowerLimitsAdder newActivePowerLimits1() {
-        throw new UnsupportedOperationException();
-    }
-
-    default VoltageLimitsAdder newVoltageLimits1() {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -194,26 +182,14 @@ public interface Branch<I extends Branch<I>> extends Connectable<I> {
         return getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class);
     }
 
+    @Override
     default List<OperationalLimits> getOperationalLimits2() {
         return Collections.singletonList(getCurrentLimits2());
     }
 
+    @Override
     default <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
         return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits2() : null;
-    }
-
-    CurrentLimitsAdder newCurrentLimits2();
-
-    default ApparentPowerLimitsAdder newApparentPowerLimits2() {
-        throw new UnsupportedOperationException();
-    }
-
-    default ActivePowerLimitsAdder newActivePowerLimits2() {
-        throw new UnsupportedOperationException();
-    }
-
-    default VoltageLimitsAdder newVoltageLimits2() {
-        throw new UnsupportedOperationException();
     }
 
     boolean isOverloaded();

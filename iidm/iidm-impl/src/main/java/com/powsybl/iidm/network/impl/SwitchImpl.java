@@ -7,16 +7,19 @@
 package com.powsybl.iidm.network.impl;
 
 import com.powsybl.commons.util.trove.TBooleanArrayList;
-import com.powsybl.iidm.network.Switch;
-import com.powsybl.iidm.network.SwitchKind;
-import com.powsybl.iidm.network.TopologyKind;
-import com.powsybl.iidm.network.ValidationException;
+import com.powsybl.iidm.network.*;
+
+import java.util.List;
 
 /**
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
 class SwitchImpl extends AbstractIdentifiable<Switch> implements Switch, MultiVariantObject {
+
+    private final OperationalLimitsHolderImpl operationalLimitsHolder1;
+
+    private final OperationalLimitsHolderImpl operationalLimitsHolder2;
 
     private final VoltageLevelExt voltageLevel;
 
@@ -38,6 +41,8 @@ class SwitchImpl extends AbstractIdentifiable<Switch> implements Switch, MultiVa
             this.open.add(open);
             this.retained.add(retained);
         }
+        operationalLimitsHolder1 = new OperationalLimitsHolderImpl(this, "limits1");
+        operationalLimitsHolder2 = new OperationalLimitsHolderImpl(this, "limits2");
     }
 
     @Override
@@ -137,4 +142,63 @@ class SwitchImpl extends AbstractIdentifiable<Switch> implements Switch, MultiVa
         return "Switch";
     }
 
+    @Override
+    public List<OperationalLimits> getOperationalLimits1() {
+        return operationalLimitsHolder1.getOperationalLimits();
+    }
+
+    @Override
+    public <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
+        return operationalLimitsHolder1.getOperationalLimits(limitType, limitClazz);
+    }
+
+    @Override
+    public CurrentLimitsAdder newCurrentLimits1() {
+        return operationalLimitsHolder1.newCurrentLimits();
+    }
+
+    @Override
+    public ApparentPowerLimitsAdder newApparentPowerLimits1() {
+        return operationalLimitsHolder1.newApparentPowerLimits();
+    }
+
+    @Override
+    public ActivePowerLimitsAdder newActivePowerLimits1() {
+        return operationalLimitsHolder1.newActivePowerLimitsAdder();
+    }
+
+    @Override
+    public VoltageLimitsAdder newVoltageLimits1() {
+        return operationalLimitsHolder1.newVoltageLimits();
+    }
+
+    @Override
+    public List<OperationalLimits> getOperationalLimits2() {
+        return operationalLimitsHolder2.getOperationalLimits();
+    }
+
+    @Override
+    public <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
+        return operationalLimitsHolder2.getOperationalLimits(limitType, limitClazz);
+    }
+
+    @Override
+    public CurrentLimitsAdder newCurrentLimits2() {
+        return operationalLimitsHolder2.newCurrentLimits();
+    }
+
+    @Override
+    public ApparentPowerLimitsAdder newApparentPowerLimits2() {
+        return operationalLimitsHolder2.newApparentPowerLimits();
+    }
+
+    @Override
+    public ActivePowerLimitsAdder newActivePowerLimits2() {
+        return operationalLimitsHolder2.newActivePowerLimitsAdder();
+    }
+
+    @Override
+    public VoltageLimitsAdder newVoltageLimits2() {
+        return operationalLimitsHolder2.newVoltageLimits();
+    }
 }

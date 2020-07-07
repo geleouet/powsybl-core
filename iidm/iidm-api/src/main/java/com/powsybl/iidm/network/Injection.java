@@ -6,42 +6,15 @@
  */
 package com.powsybl.iidm.network;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * A equipment with one terminal.
  *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
  */
-public interface Injection<I extends Injection<I>> extends Connectable<I> {
+public interface Injection<I extends Injection<I>> extends Connectable<I>, OperationalLimitsHolder {
 
     /**
      * Get the terminal.
      */
     Terminal getTerminal();
-
-    default List<OperationalLimits> getOperationalLimits() {
-        return Collections.emptyList();
-    }
-
-    default <L extends OperationalLimits> L getOperationalLimits(LimitType type, Class<L> limitClazz) {
-        return null;
-    }
-
-    default CurrentLimitsAdder newCurrentLimits() {
-        throw new UnsupportedOperationException();
-    }
-
-    default ApparentPowerLimitsAdder newApparentPowerLimits() {
-        throw new UnsupportedOperationException();
-    }
-
-    default ActivePowerLimitsAdder newActivePowerLimits() {
-        throw new UnsupportedOperationException();
-    }
-
-    default VoltageLimitsAdder newVoltageLimits() {
-        throw new UnsupportedOperationException();
-    }
 }

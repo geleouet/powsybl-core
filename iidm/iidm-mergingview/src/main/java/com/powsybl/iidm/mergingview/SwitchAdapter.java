@@ -68,6 +68,11 @@ public class SwitchAdapter extends AbstractIdentifiableAdapter<Switch> implement
     }
 
     @Override
+    public ActivePowerLimitsAdder newActivePowerLimits1() {
+        return getDelegate().newActivePowerLimits1();
+    }
+
+    @Override
     public ApparentPowerLimitsAdder newApparentPowerLimits1() {
         return getDelegate().newApparentPowerLimits1();
     }
@@ -90,6 +95,11 @@ public class SwitchAdapter extends AbstractIdentifiableAdapter<Switch> implement
     @Override
     public CurrentLimitsAdder newCurrentLimits2() {
         return getDelegate().newCurrentLimits2();
+    }
+
+    @Override
+    public ActivePowerLimitsAdder newActivePowerLimits2() {
+        return getDelegate().newActivePowerLimits2();
     }
 
     @Override
