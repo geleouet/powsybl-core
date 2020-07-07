@@ -166,6 +166,7 @@ class ThreeWindingsTransformerImpl extends AbstractConnectable<ThreeWindingsTran
                     phaseTapChanger);
         }
 
+        @Override
         public CurrentLimitsAdder newCurrentLimits() {
             return operationalLimitsHolder.newCurrentLimits();
         }
