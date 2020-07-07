@@ -275,7 +275,8 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
         Leg setRatedU(double ratedU);
 
         /**
-         * @deprecated Use {@link #getOperationalLimits(LimitType, Class)} instead.
+         * @deprecated Use {@link #getOperationalLimits(LimitType, Class)} instead as follows:
+         * {@code getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)}.
          */
         @Deprecated
         default CurrentLimits getCurrentLimits() {

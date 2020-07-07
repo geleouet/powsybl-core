@@ -144,7 +144,8 @@ public interface Branch<I extends Branch<I>> extends Connectable<I>, Operational
     Side getSide(Terminal terminal);
 
     /**
-     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} or {@link #getOperationalLimits2(LimitType, Class)} instead.
+     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} or {@link #getOperationalLimits2(LimitType, Class)} instead as follows:
+     * {@code getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)} or {@code getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)}.
      */
     @Deprecated
     default CurrentLimits getCurrentLimits(Side side) {
@@ -157,7 +158,8 @@ public interface Branch<I extends Branch<I>> extends Connectable<I>, Operational
     }
 
     /**
-     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} instead.
+     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} instead as follows:
+     * {@code getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)}.
      */
     @Deprecated
     default CurrentLimits getCurrentLimits1() {
@@ -175,7 +177,8 @@ public interface Branch<I extends Branch<I>> extends Connectable<I>, Operational
     }
 
     /**
-     * @deprecated Use {@link #getOperationalLimits2(LimitType, Class)} instead.
+     * @deprecated Use {@link #getOperationalLimits2(LimitType, Class)} instead as follows:
+     * {@code getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)}.
      */
     @Deprecated
     default CurrentLimits getCurrentLimits2() {
