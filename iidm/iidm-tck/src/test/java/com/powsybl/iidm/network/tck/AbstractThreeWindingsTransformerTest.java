@@ -110,7 +110,7 @@ public abstract class AbstractThreeWindingsTransformerTest extends AbstractTrans
             .setValue(1200)
             .endTemporaryLimit()
             .add();
-        assertSame(currentLimitsInLeg1, leg1.getCurrentLimits());
+        assertSame(currentLimitsInLeg1, leg1.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class));
 
         RatioTapChanger ratioTapChangerInLeg2 = createRatioTapChanger(leg2,
             transformer.getTerminal(ThreeWindingsTransformer.Side.TWO));
@@ -125,7 +125,7 @@ public abstract class AbstractThreeWindingsTransformerTest extends AbstractTrans
             .setValue(1200)
             .endTemporaryLimit()
             .add();
-        assertSame(currentLimitsInLeg2, leg2.getCurrentLimits());
+        assertSame(currentLimitsInLeg2, leg2.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class));
 
         RatioTapChanger ratioTapChangerInLeg3 = createRatioTapChanger(leg3,
             transformer.getTerminal(ThreeWindingsTransformer.Side.THREE));
@@ -140,7 +140,7 @@ public abstract class AbstractThreeWindingsTransformerTest extends AbstractTrans
             .setValue(1200)
             .endTemporaryLimit()
             .add();
-        assertSame(currentLimitsInLeg3, leg3.getCurrentLimits());
+        assertSame(currentLimitsInLeg3, leg3.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class));
 
         PhaseTapChanger phaseTapChangerInLeg1 = createPhaseTapChanger(leg1,
             transformer.getTerminal(ThreeWindingsTransformer.Side.ONE));

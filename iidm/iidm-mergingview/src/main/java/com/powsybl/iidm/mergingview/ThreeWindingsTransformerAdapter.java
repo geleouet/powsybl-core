@@ -86,12 +86,6 @@ public class ThreeWindingsTransformerAdapter extends AbstractIdentifiableAdapter
         }
 
         @Override
-        @Deprecated
-        public CurrentLimits getCurrentLimits() {
-            return getDelegate().getCurrentLimits();
-        }
-
-        @Override
         public List<OperationalLimits> getOperationalLimits() {
             return getDelegate().getOperationalLimits();
         }

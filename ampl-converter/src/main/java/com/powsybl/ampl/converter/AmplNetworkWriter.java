@@ -843,7 +843,7 @@ public class AmplNetworkWriter {
                         .writeCell(Double.NaN)
                         .writeCell(t1.getQ())
                         .writeCell(Double.NaN)
-                        .writeCell(getPermanentLimit(twt.getLeg1().getCurrentLimits()))
+                        .writeCell(getPermanentLimit(twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)))
                         .writeCell(false)
                         .writeCell(faultNum)
                         .writeCell(actionNum)
@@ -872,7 +872,7 @@ public class AmplNetworkWriter {
                         .writeCell(Double.NaN)
                         .writeCell(t2.getQ())
                         .writeCell(Double.NaN)
-                        .writeCell(getPermanentLimit(twt.getLeg2().getCurrentLimits()))
+                        .writeCell(getPermanentLimit(twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)))
                         .writeCell(Double.NaN)
                         .writeCell(false)
                         .writeCell(faultNum)
@@ -902,7 +902,7 @@ public class AmplNetworkWriter {
                         .writeCell(Double.NaN)
                         .writeCell(t3.getQ())
                         .writeCell(Double.NaN)
-                        .writeCell(getPermanentLimit(twt.getLeg3().getCurrentLimits()))
+                        .writeCell(getPermanentLimit(twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)))
                         .writeCell(Double.NaN)
                         .writeCell(false)
                         .writeCell(faultNum)
@@ -1665,17 +1665,17 @@ public class AmplNetworkWriter {
 
     private void writeThreeWindingsTransformerCurrentLimits(TableFormatter formatter) throws IOException {
         for (ThreeWindingsTransformer twt : network.getThreeWindingsTransformers()) {
-            if (twt.getLeg1().getCurrentLimits() != null) {
+            if (twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
                 String branchId = twt.getId() + AmplConstants.LEG1_SUFFIX;
-                writeTemporaryCurrentLimits(twt.getLeg1().getCurrentLimits(), formatter, branchId, false, "");
+                writeTemporaryCurrentLimits(twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, false, "");
             }
-            if (twt.getLeg2().getCurrentLimits() != null) {
+            if (twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
                 String branchId = twt.getId() + AmplConstants.LEG2_SUFFIX;
-                writeTemporaryCurrentLimits(twt.getLeg2().getCurrentLimits(), formatter, branchId, true, "");
+                writeTemporaryCurrentLimits(twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, true, "");
             }
-            if (twt.getLeg3().getCurrentLimits() != null) {
+            if (twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
                 String branchId = twt.getId() + AmplConstants.LEG3_SUFFIX;
-                writeTemporaryCurrentLimits(twt.getLeg3().getCurrentLimits(), formatter, branchId, true, "");
+                writeTemporaryCurrentLimits(twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, true, "");
             }
         }
     }

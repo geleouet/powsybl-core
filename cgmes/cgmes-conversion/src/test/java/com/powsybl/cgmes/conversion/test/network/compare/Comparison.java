@@ -608,8 +608,8 @@ public class Comparison {
 
         compare("ratedU", expected.getRatedU(), actual.getRatedU());
         compareCurrentLimits(expectedt, actualt,
-                expected.getCurrentLimits(),
-                actual.getCurrentLimits());
+                expected.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class),
+                actual.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class));
         compareRatioTapChanger(expected.getRatioTapChanger(), actual.getRatioTapChanger());
         comparePhaseTapChanger(expected.getPhaseTapChanger(), actual.getPhaseTapChanger());
     }
