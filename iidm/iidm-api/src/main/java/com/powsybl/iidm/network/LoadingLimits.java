@@ -38,11 +38,21 @@ public interface LoadingLimits extends OperationalLimits {
         int getAcceptableDuration();
 
         /**
+         * @deprecated Use {@link #hasOverloadingProtection()} instead e.g. {@code boolean fictitious = !hasOverloadingProtection()}.
+         */
+        @Deprecated
+        default boolean isFictitious() {
+            return !hasOverloadingProtection();
+        }
+
+        /**
          * Check if the temporary limit is a real limit corresponding to an overloading  protection or just an operating
          * rule
-         * @return false if it is a real limit, false otherwise
+         * @return true if it has an overloading protection, false otherwise
          */
-        boolean isFictitious();
+        default boolean hasOverloadingProtection() {
+            return !isFictitious();
+        }
     }
 
     /**
