@@ -53,62 +53,32 @@ public class SwitchAdapter extends AbstractIdentifiableAdapter<Switch> implement
     }
 
     @Override
-    public List<OperationalLimits> getOperationalLimits1() {
-        return getDelegate().getOperationalLimits1();
+    public List<OperationalLimits> getOperationalLimits() {
+        return getDelegate().getOperationalLimits();
     }
 
     @Override
-    public  <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
-        return getDelegate().getOperationalLimits1(limitType, limitClazz);
+    public  <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
+        return getDelegate().getOperationalLimits(limitType, limitClazz);
     }
 
     @Override
-    public CurrentLimitsAdder newCurrentLimits1() {
-        return getDelegate().newCurrentLimits1();
+    public CurrentLimitsAdder newCurrentLimits() {
+        return getDelegate().newCurrentLimits();
     }
 
     @Override
-    public ActivePowerLimitsAdder newActivePowerLimits1() {
-        return getDelegate().newActivePowerLimits1();
+    public ActivePowerLimitsAdder newActivePowerLimits() {
+        return getDelegate().newActivePowerLimits();
     }
 
     @Override
-    public ApparentPowerLimitsAdder newApparentPowerLimits1() {
-        return getDelegate().newApparentPowerLimits1();
+    public ApparentPowerLimitsAdder newApparentPowerLimits() {
+        return getDelegate().newApparentPowerLimits();
     }
 
     @Override
-    public VoltageLimitsAdder newVoltageLimits1() {
-        return getDelegate().newVoltageLimits1();
-    }
-
-    @Override
-    public List<OperationalLimits> getOperationalLimits2() {
-        return getDelegate().getOperationalLimits2();
-    }
-
-    @Override
-    public <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
-        return getDelegate().getOperationalLimits2(limitType, limitClazz);
-    }
-
-    @Override
-    public CurrentLimitsAdder newCurrentLimits2() {
-        return getDelegate().newCurrentLimits2();
-    }
-
-    @Override
-    public ActivePowerLimitsAdder newActivePowerLimits2() {
-        return getDelegate().newActivePowerLimits2();
-    }
-
-    @Override
-    public ApparentPowerLimitsAdder newApparentPowerLimits2() {
-        return getDelegate().newApparentPowerLimits2();
-    }
-
-    @Override
-    public VoltageLimitsAdder newVoltageLimits2() {
-        return getDelegate().newVoltageLimits2();
+    public VoltageLimitsAdder newVoltageLimits() {
+        return getDelegate().newVoltageLimits();
     }
 }
