@@ -178,20 +178,13 @@ class MergedLine implements TieLine {
     }
 
     @Override
-    public CurrentLimits getCurrentLimits(final Side side) {
-        switch (side) {
-            case ONE:
-                return getCurrentLimits1();
-            case TWO:
-                return getCurrentLimits2();
-            default:
-                throw new AssertionError(UNEXPECTED_SIDE_VALUE + side);
-        }
+    public List<OperationalLimits> getOperationalLimits1() {
+        return getDanglingLine1().getOperationalLimits();
     }
 
     @Override
-    public CurrentLimits getCurrentLimits1() {
-        return getDanglingLine1().getCurrentLimits();
+    public <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
+        return getDanglingLine1().getOperationalLimits(limitType, limitClazz);
     }
 
     @Override
@@ -200,8 +193,13 @@ class MergedLine implements TieLine {
     }
 
     @Override
-    public CurrentLimits getCurrentLimits2() {
-        return getDanglingLine2().getCurrentLimits();
+    public List<OperationalLimits> getOperationalLimits2() {
+        return getDanglingLine2().getOperationalLimits();
+    }
+
+    @Override
+    public <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
+        return getDanglingLine2().getOperationalLimits(limitType, limitClazz);
     }
 
     @Override

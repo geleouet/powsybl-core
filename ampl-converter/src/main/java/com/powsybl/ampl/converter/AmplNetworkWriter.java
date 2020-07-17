@@ -611,7 +611,7 @@ public class AmplNetworkWriter {
                         .writeCell(-tl.getHalf1().getXnodeP()) // xnode node flow side 1
                         .writeCell(t1.getQ())
                         .writeCell(-tl.getHalf1().getXnodeQ()) // xnode node flow side 1
-                        .writeCell(getPermanentLimit(l.getCurrentLimits1()))
+                        .writeCell(getPermanentLimit(l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
                         .writeCell(Float.NaN)
                         .writeCell(merged)
                         .writeCell(faultNum)
@@ -666,7 +666,7 @@ public class AmplNetworkWriter {
                         .writeCell(t2.getP())
                         .writeCell(t1.getQ())
                         .writeCell(t2.getQ())
-                        .writeCell(getPermanentLimit(l.getCurrentLimits1()))
+                        .writeCell(getPermanentLimit(l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
                         .writeCell(getPermanentLimit(l.getCurrentLimits2()))
                         .writeCell(merged)
                         .writeCell(faultNum)
@@ -751,7 +751,7 @@ public class AmplNetworkWriter {
                     .writeCell(t2.getP())
                     .writeCell(t1.getQ())
                     .writeCell(t2.getQ())
-                    .writeCell(getPermanentLimit(twt.getCurrentLimits1()))
+                    .writeCell(getPermanentLimit(twt.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
                     .writeCell(getPermanentLimit(twt.getCurrentLimits2()))
                     .writeCell(false) // TODO to update
                     .writeCell(faultNum)
@@ -1652,10 +1652,10 @@ public class AmplNetworkWriter {
     }
 
     private void writeBranchCurrentLimits(TableFormatter formatter) throws IOException {
-        for (Branch branch : network.getBranches()) {
+        for (Branch<?> branch : network.getBranches()) {
             String branchId = branch.getId();
-            if (branch.getCurrentLimits1() != null) {
-                writeTemporaryCurrentLimits(branch.getCurrentLimits1(), formatter, branchId, true, "_1_");
+            if (branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
+                writeTemporaryCurrentLimits(branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, true, "_1_");
             }
             if (branch.getCurrentLimits2() != null) {
                 writeTemporaryCurrentLimits(branch.getCurrentLimits2(), formatter, branchId, false, "_2_");

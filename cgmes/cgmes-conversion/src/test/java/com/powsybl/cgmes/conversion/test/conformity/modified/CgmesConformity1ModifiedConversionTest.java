@@ -290,7 +290,7 @@ public class CgmesConformity1ModifiedConversionTest {
         Network network = new CgmesImport().importData(CgmesConformity1ModifiedCatalog.microGridBaseCaseBEUndefinedPatl().dataSource(),
                 NetworkFactory.findDefault(), null);
         Line line = network.getLine("_ffbabc27-1ccd-4fdc-b037-e341706c8d29");
-        CurrentLimits limits = line.getCurrentLimits1();
+        CurrentLimits limits = line.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class);
         assertNotNull(limits);
         assertEquals(2, limits.getTemporaryLimits().size());
         assertEquals(1312.0, limits.getPermanentLimit(), 0.0);
@@ -465,9 +465,9 @@ public class CgmesConformity1ModifiedConversionTest {
         // In the modified case both ends have to see the same value
         Line l0 = network0.getLine("_1e7f52a9-21d0-4ebe-9a8a-b29281d5bfc9");
         Line l1 = network1.getLine("_1e7f52a9-21d0-4ebe-9a8a-b29281d5bfc9");
-        assertEquals(525, l0.getCurrentLimits1().getPermanentLimit(), tol);
+        assertEquals(525, l0.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
         assertNull(l0.getCurrentLimits2());
-        assertEquals(525, l1.getCurrentLimits1().getPermanentLimit(), tol);
+        assertEquals(525, l1.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
         assertEquals(525, l1.getCurrentLimits2().getPermanentLimit(), tol);
 
         // 2 - PATL Current defined for an ACTransmissionLine
@@ -483,9 +483,9 @@ public class CgmesConformity1ModifiedConversionTest {
         // 3 - PATL Current defined for a PowerTransformer, should be rejected
         TwoWindingsTransformer tx0 = network0.getTwoWindingsTransformer("_ceb5d06a-a7ff-4102-a620-7f3ea5fb4a51");
         TwoWindingsTransformer tx1 = network1.getTwoWindingsTransformer("_ceb5d06a-a7ff-4102-a620-7f3ea5fb4a51");
-        assertEquals(158, tx0.getCurrentLimits1().getPermanentLimit(), tol);
+        assertEquals(158, tx0.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
         assertEquals(1732, tx0.getCurrentLimits2().getPermanentLimit(), tol);
-        assertNull(tx1.getCurrentLimits1());
+        assertNull(tx1.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
         assertEquals(1732, tx1.getCurrentLimits2().getPermanentLimit(), tol);
 
         // 4 - PATL Current defined for Switch, will be ignored

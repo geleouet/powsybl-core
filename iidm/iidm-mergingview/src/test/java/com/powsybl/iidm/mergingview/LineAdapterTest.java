@@ -7,11 +7,7 @@
 package com.powsybl.iidm.mergingview;
 
 import com.powsybl.commons.PowsyblException;
-import com.powsybl.iidm.network.Branch;
-import com.powsybl.iidm.network.DanglingLine;
-import com.powsybl.iidm.network.Line;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.network.TopologyVisitor;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.test.BatteryNetworkFactory;
 import com.powsybl.iidm.network.test.NoEquipmentNetworkFactory;
 import org.junit.Before;
@@ -84,7 +80,7 @@ public class LineAdapterTest {
         assertEquals(b2, lineAdapted.getB2(), 0.0);
         lineAdapted.setB2(++b2);
         assertEquals(b2, lineAdapted.getB2(), 0.0);
-        assertSame(lineRef.getCurrentLimits1(), lineAdapted.getCurrentLimits1());
+        assertSame(lineRef.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), lineAdapted.getCurrentLimits1());
         assertSame(lineRef.getCurrentLimits2(), lineAdapted.getCurrentLimits2());
         assertSame(lineRef.getCurrentLimits(Branch.Side.ONE), lineAdapted.getCurrentLimits(Branch.Side.ONE));
         assertSame(lineRef.getCurrentLimits(Branch.Side.TWO), lineAdapted.getCurrentLimits(Branch.Side.TWO));

@@ -7,9 +7,7 @@
 package com.powsybl.iidm.xml;
 
 import com.powsybl.commons.xml.XmlUtil;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.network.TieLine;
-import com.powsybl.iidm.network.TieLineAdder;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.xml.util.IidmXmlUtil;
 
 import javax.xml.stream.XMLStreamException;
@@ -31,7 +29,7 @@ class TieLineXml extends AbstractConnectableXml<TieLine, TieLineAdder, Network> 
 
     @Override
     protected boolean hasSubElements(TieLine tl) {
-        return tl.getCurrentLimits1() != null || tl.getCurrentLimits2() != null;
+        return tl.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null || tl.getCurrentLimits2() != null;
     }
 
     private static void writeHalf(TieLine.HalfLine halfLine, NetworkXmlWriterContext context, int side) throws XMLStreamException {
@@ -66,8 +64,8 @@ class TieLineXml extends AbstractConnectableXml<TieLine, TieLineAdder, Network> 
 
     @Override
     protected void writeSubElements(TieLine tl, Network n, NetworkXmlWriterContext context) throws XMLStreamException {
-        if (tl.getCurrentLimits1() != null) {
-            writeCurrentLimits(1, tl.getCurrentLimits1(), context.getWriter(), context.getVersion(), context.getOptions());
+        if (tl.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
+            writeCurrentLimits(1, tl.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), context.getWriter(), context.getVersion(), context.getOptions());
         }
         if (tl.getCurrentLimits2() != null) {
             writeCurrentLimits(2, tl.getCurrentLimits2(), context.getWriter(), context.getVersion(), context.getOptions());

@@ -10,9 +10,7 @@ import com.powsybl.action.dsl.ast.*;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.dsl.ast.ExpressionNode;
-import com.powsybl.iidm.network.Line;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.network.Terminal;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
 import org.junit.Before;
 import org.junit.Test;
@@ -159,7 +157,7 @@ public class ConditionDslLoaderTest {
         evalAndAssert(false, "isOverloaded(['NHV1_NHV2_1','NHV1_NHV2_2'])");
 
         line1.newCurrentLimits1().setPermanentLimit(0.00001).add();
-        assertNotNull(line1.getCurrentLimits1());
+        assertNotNull(line1.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
         evalAndAssert(true, "isOverloaded(['NHV1_NHV2_1','NHV1_NHV2_2'])");
 
         line1.getTerminal1().setP(600.0).setQ(300.0); // i = 1019.2061

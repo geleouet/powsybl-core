@@ -487,8 +487,8 @@ public class Comparison {
         compare("g2", expected.getG2(), actual.getG2());
         compare("b2", expected.getB2(), actual.getB2());
         compareCurrentLimits(expected, actual,
-                expected.getCurrentLimits1(),
-                actual.getCurrentLimits1());
+                expected.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class),
+                actual.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
         compareCurrentLimits(expected, actual,
                 expected.getCurrentLimits2(),
                 actual.getCurrentLimits2());
@@ -548,8 +548,8 @@ public class Comparison {
         compare("ratedU1", expected.getRatedU1(), actual.getRatedU1());
         compare("ratedU2", expected.getRatedU2(), actual.getRatedU2());
         compareCurrentLimits(expected, actual,
-                expected.getCurrentLimits1(),
-                actual.getCurrentLimits1());
+                expected.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class),
+                actual.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
         compareCurrentLimits(expected, actual,
                 expected.getCurrentLimits2(),
                 actual.getCurrentLimits2());
