@@ -490,8 +490,8 @@ public class Comparison {
                 expected.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class),
                 actual.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
         compareCurrentLimits(expected, actual,
-                expected.getCurrentLimits2(),
-                actual.getCurrentLimits2());
+                expected.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class),
+                actual.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
     }
 
     private void compareDanglingLines(DanglingLine expected, DanglingLine actual) {
@@ -551,8 +551,8 @@ public class Comparison {
                 expected.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class),
                 actual.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
         compareCurrentLimits(expected, actual,
-                expected.getCurrentLimits2(),
-                actual.getCurrentLimits2());
+                expected.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class),
+                actual.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
 
         compareRatioTapChanger(expected.getRatioTapChanger(), actual.getRatioTapChanger());
         comparePhaseTapChanger(expected.getPhaseTapChanger(), actual.getPhaseTapChanger());

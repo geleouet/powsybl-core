@@ -82,12 +82,6 @@ abstract class AbstractBranchAdapter<I extends Branch<I>> extends AbstractConnec
     }
 
     @Override
-    @Deprecated
-    public CurrentLimits getCurrentLimits2() {
-        return getDelegate().getCurrentLimits2();
-    }
-
-    @Override
     public List<OperationalLimits> getOperationalLimits2() {
         return getDelegate().getOperationalLimits2();
     }

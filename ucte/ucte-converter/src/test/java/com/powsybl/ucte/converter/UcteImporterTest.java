@@ -122,7 +122,7 @@ public class UcteImporterTest {
         MergedXnode mergedXnode = l.getExtension(MergedXnode.class);
         assertNotNull(mergedXnode);
         assertNotNull(l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
-        assertNotNull(l.getCurrentLimits2());
+        assertNotNull(l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
     }
 
     @Test

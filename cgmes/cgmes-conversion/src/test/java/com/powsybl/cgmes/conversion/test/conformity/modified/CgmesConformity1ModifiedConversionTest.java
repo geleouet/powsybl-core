@@ -466,9 +466,9 @@ public class CgmesConformity1ModifiedConversionTest {
         Line l0 = network0.getLine("_1e7f52a9-21d0-4ebe-9a8a-b29281d5bfc9");
         Line l1 = network1.getLine("_1e7f52a9-21d0-4ebe-9a8a-b29281d5bfc9");
         assertEquals(525, l0.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
-        assertNull(l0.getCurrentLimits2());
+        assertNull(l0.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
         assertEquals(525, l1.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
-        assertEquals(525, l1.getCurrentLimits2().getPermanentLimit(), tol);
+        assertEquals(525, l1.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
 
         // 2 - PATL Current defined for an ACTransmissionLine
         // that will be mapped to a DanglingLine in IIDM
@@ -484,15 +484,15 @@ public class CgmesConformity1ModifiedConversionTest {
         TwoWindingsTransformer tx0 = network0.getTwoWindingsTransformer("_ceb5d06a-a7ff-4102-a620-7f3ea5fb4a51");
         TwoWindingsTransformer tx1 = network1.getTwoWindingsTransformer("_ceb5d06a-a7ff-4102-a620-7f3ea5fb4a51");
         assertEquals(158, tx0.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
-        assertEquals(1732, tx0.getCurrentLimits2().getPermanentLimit(), tol);
+        assertEquals(1732, tx0.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
         assertNull(tx1.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
-        assertEquals(1732, tx1.getCurrentLimits2().getPermanentLimit(), tol);
+        assertEquals(1732, tx1.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
 
         // 4 - PATL Current defined for Switch, will be ignored
         TwoWindingsTransformer tx0s = network0.getTwoWindingsTransformer("_6c89588b-3df5-4120-88e5-26164afb43e9");
         TwoWindingsTransformer tx1s = network1.getTwoWindingsTransformer("_6c89588b-3df5-4120-88e5-26164afb43e9");
-        assertEquals(1732, tx0s.getCurrentLimits2().getPermanentLimit(), tol);
-        assertNull(tx1s.getCurrentLimits2());
+        assertEquals(1732, tx0s.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(), tol);
+        assertNull(tx1s.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
     }
 
     @Test

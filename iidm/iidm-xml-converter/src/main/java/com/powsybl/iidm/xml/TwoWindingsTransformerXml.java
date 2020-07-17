@@ -31,7 +31,7 @@ class TwoWindingsTransformerXml extends AbstractTransformerXml<TwoWindingsTransf
         return twt.hasRatioTapChanger()
                 || twt.hasPhaseTapChanger()
                 || twt.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null
-                || twt.getCurrentLimits2() != null;
+                || twt.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null;
     }
 
     @Override
@@ -65,7 +65,7 @@ class TwoWindingsTransformerXml extends AbstractTransformerXml<TwoWindingsTransf
             writeCurrentLimits(1, twt.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), context.getWriter(), context.getVersion(), context.getOptions());
         }
         if (twt.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null) {
-            writeCurrentLimits(2, twt.getCurrentLimits2(), context.getWriter(), context.getVersion(), context.getOptions());
+            writeCurrentLimits(2, twt.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), context.getWriter(), context.getVersion(), context.getOptions());
         }
     }
 

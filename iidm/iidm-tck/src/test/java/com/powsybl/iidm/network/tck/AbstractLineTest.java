@@ -123,7 +123,7 @@ public abstract class AbstractLineTest {
             .endTemporaryLimit()
             .add();
         assertSame(currentLimits1, acLine.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
-        assertSame(currentLimits2, acLine.getCurrentLimits2());
+        assertSame(currentLimits2, acLine.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
         assertSame(currentLimits1, acLine.getCurrentLimits(Branch.Side.ONE));
         assertSame(currentLimits2, acLine.getCurrentLimits(Branch.Side.TWO));
 

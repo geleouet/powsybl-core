@@ -99,7 +99,7 @@ public class ActionExpressionEvaluator extends ExpressionEvaluator implements Ac
             Objects.requireNonNull(branch);
             Objects.requireNonNull(side);
             double permanentLimit1 = branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null ? branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit() : Double.NaN;
-            double permanentLimit2 = branch.getCurrentLimits2() != null ? branch.getCurrentLimits2().getPermanentLimit() : Double.NaN;
+            double permanentLimit2 = branch.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null ? branch.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit() : Double.NaN;
             return side == Branch.Side.ONE ? permanentLimit1 : permanentLimit2;
         }
 

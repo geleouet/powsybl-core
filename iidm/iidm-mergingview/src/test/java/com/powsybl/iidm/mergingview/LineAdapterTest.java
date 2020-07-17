@@ -80,8 +80,8 @@ public class LineAdapterTest {
         assertEquals(b2, lineAdapted.getB2(), 0.0);
         lineAdapted.setB2(++b2);
         assertEquals(b2, lineAdapted.getB2(), 0.0);
-        assertSame(lineRef.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), lineAdapted.getCurrentLimits1());
-        assertSame(lineRef.getCurrentLimits2(), lineAdapted.getCurrentLimits2());
+        assertSame(lineRef.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), lineAdapted.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
+        assertSame(lineRef.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), lineAdapted.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
         assertSame(lineRef.getCurrentLimits(Branch.Side.ONE), lineAdapted.getCurrentLimits(Branch.Side.ONE));
         assertSame(lineRef.getCurrentLimits(Branch.Side.TWO), lineAdapted.getCurrentLimits(Branch.Side.TWO));
 

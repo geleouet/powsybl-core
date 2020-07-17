@@ -28,7 +28,7 @@ class LineXml extends AbstractConnectableXml<Line, LineAdder, Network> {
 
     @Override
     protected boolean hasSubElements(Line l) {
-        return l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null || l.getCurrentLimits2() != null;
+        return l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null || l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null;
     }
 
     @Override
@@ -52,8 +52,8 @@ class LineXml extends AbstractConnectableXml<Line, LineAdder, Network> {
         if (l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
             writeCurrentLimits(1, l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), context.getWriter(), context.getVersion(), context.getOptions());
         }
-        if (l.getCurrentLimits2() != null) {
-            writeCurrentLimits(2, l.getCurrentLimits2(), context.getWriter(), context.getVersion(), context.getOptions());
+        if (l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null) {
+            writeCurrentLimits(2, l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), context.getWriter(), context.getVersion(), context.getOptions());
         }
     }
 

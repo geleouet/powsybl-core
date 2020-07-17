@@ -155,7 +155,7 @@ public class DanglingLineAdapterTest {
                 .endTemporaryLimit()
                 .add();
         assertSame(currentLimits1, mergedLine.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
-        assertSame(currentLimits2, mergedLine.getCurrentLimits2());
+        assertSame(currentLimits2, mergedLine.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
         assertSame(currentLimits1, mergedLine.getCurrentLimits(Branch.Side.ONE));
         assertSame(currentLimits2, mergedLine.getCurrentLimits(Branch.Side.TWO));
         assertEquals("dl1 + dl2", mergedLine.getId());

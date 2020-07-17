@@ -639,7 +639,7 @@ public class AmplNetworkWriter {
                         .writeCell(-tl.getHalf2().getXnodeQ()) // xnode node flow side 2
                         .writeCell(t2.getQ())
                         .writeCell(Float.NaN)
-                        .writeCell(getPermanentLimit(l.getCurrentLimits2()))
+                        .writeCell(getPermanentLimit(l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)))
                         .writeCell(merged)
                         .writeCell(faultNum)
                         .writeCell(actionNum)
@@ -667,7 +667,7 @@ public class AmplNetworkWriter {
                         .writeCell(t1.getQ())
                         .writeCell(t2.getQ())
                         .writeCell(getPermanentLimit(l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
-                        .writeCell(getPermanentLimit(l.getCurrentLimits2()))
+                        .writeCell(getPermanentLimit(l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)))
                         .writeCell(merged)
                         .writeCell(faultNum)
                         .writeCell(actionNum)
@@ -752,7 +752,7 @@ public class AmplNetworkWriter {
                     .writeCell(t1.getQ())
                     .writeCell(t2.getQ())
                     .writeCell(getPermanentLimit(twt.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
-                    .writeCell(getPermanentLimit(twt.getCurrentLimits2()))
+                    .writeCell(getPermanentLimit(twt.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)))
                     .writeCell(false) // TODO to update
                     .writeCell(faultNum)
                     .writeCell(actionNum)
@@ -1657,8 +1657,8 @@ public class AmplNetworkWriter {
             if (branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
                 writeTemporaryCurrentLimits(branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, true, "_1_");
             }
-            if (branch.getCurrentLimits2() != null) {
-                writeTemporaryCurrentLimits(branch.getCurrentLimits2(), formatter, branchId, false, "_2_");
+            if (branch.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null) {
+                writeTemporaryCurrentLimits(branch.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, false, "_2_");
             }
         }
     }

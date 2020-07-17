@@ -486,7 +486,7 @@ public class UcteExporter implements Exporter {
                 (float) line.getR() * (1.0f - mergedXnode.getRdp()),
                 (float) line.getX() * (1.0f - mergedXnode.getXdp()),
                 (float) line.getB2(),
-                (int) line.getCurrentLimits2().getPermanentLimit(),
+                (int) line.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(),
                 elementName2);
         ucteNetwork.addLine(ucteLine2);
     }
@@ -530,7 +530,7 @@ public class UcteExporter implements Exporter {
                 (float) half2.getR(),
                 (float) half2.getX(),
                 (float) (half2.getB1() + half2.getB2()),
-                (int) tieLine.getCurrentLimits2().getPermanentLimit(),
+                (int) tieLine.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(),
                 elementName2);
         ucteNetwork.addLine(ucteLine2);
     }
