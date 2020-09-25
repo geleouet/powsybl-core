@@ -23,6 +23,14 @@ public interface TieLineAdder extends BranchAdder<TieLineAdder> {
 
     TieLineAdder setB2(double b2);
 
+    default TieLineAdder setXnodeV(double xnodeV) {
+        return this;
+    }
+
+    default TieLineAdder setXnodeAngle(double xnodeAngle) {
+        return this;
+    }
+
     TieLineAdder setXnodeP(double xnodeP);
 
     TieLineAdder setXnodeQ(double xnodeQ);
