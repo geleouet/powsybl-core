@@ -183,8 +183,8 @@ class MergedLine implements TieLine {
     }
 
     @Override
-    public <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
-        return getDanglingLine1().getOperationalLimits(limitType, limitClazz);
+    public CurrentLimits getCurrentLimits1() {
+        return getDanglingLine1().getCurrentLimits();
     }
 
     @Override
@@ -193,18 +193,78 @@ class MergedLine implements TieLine {
     }
 
     @Override
+    public ActivePowerLimits getActivePowerLimits1() {
+        return getDanglingLine1().getActivePowerLimits();
+    }
+
+    @Override
+    public ActivePowerLimitsAdder newActivePowerLimits1() {
+        return getDanglingLine1().newActivePowerLimits();
+    }
+
+    @Override
+    public ApparentPowerLimits getApparentPowerLimits1() {
+        return getDanglingLine1().getApparentPowerLimits();
+    }
+
+    @Override
+    public ApparentPowerLimitsAdder newApparentPowerLimits1() {
+        return getDanglingLine1().newApparentPowerLimits();
+    }
+
+    @Override
+    public VoltageLimits getVoltageLimits1() {
+        return getDanglingLine1().getVoltageLimits();
+    }
+
+    @Override
+    public VoltageLimitsAdder newVoltageLimits1() {
+        return getDanglingLine1().newVoltageLimits();
+    }
+
+    @Override
     public List<OperationalLimits> getOperationalLimits2() {
         return getDanglingLine2().getOperationalLimits();
     }
 
     @Override
-    public <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
-        return getDanglingLine2().getOperationalLimits(limitType, limitClazz);
+    public CurrentLimits getCurrentLimits2() {
+        return getDanglingLine2().getCurrentLimits();
     }
 
     @Override
     public CurrentLimitsAdder newCurrentLimits2() {
         return getDanglingLine2().newCurrentLimits();
+    }
+
+    @Override
+    public ActivePowerLimits getActivePowerLimits2() {
+        return getDanglingLine2().getActivePowerLimits();
+    }
+
+    @Override
+    public ActivePowerLimitsAdder newActivePowerLimits2() {
+        return getDanglingLine2().newActivePowerLimits();
+    }
+
+    @Override
+    public ApparentPowerLimits getApparentPowerLimits2() {
+        return getDanglingLine2().getApparentPowerLimits();
+    }
+
+    @Override
+    public ApparentPowerLimitsAdder newApparentPowerLimits2() {
+        return getDanglingLine2().newApparentPowerLimits();
+    }
+
+    @Override
+    public VoltageLimits getVoltageLimits2() {
+        return getDanglingLine2().getVoltageLimits();
+    }
+
+    @Override
+    public VoltageLimitsAdder newVoltageLimits2() {
+        return getDanglingLine2().newVoltageLimits();
     }
 
     @Override

@@ -6,7 +6,6 @@
  */
 package com.powsybl.iidm.network.tck;
 
-import com.powsybl.iidm.network.LimitType;
 import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.VoltageLimits;
@@ -39,7 +38,7 @@ public abstract class AbstractVoltageLimitsTest {
 
         assertFalse(load.getOperationalLimits().isEmpty());
         assertEquals(1, load.getOperationalLimits().size());
-        VoltageLimits voltageLimits = load.getOperationalLimits(LimitType.VOLTAGE, VoltageLimits.class);
+        VoltageLimits voltageLimits = load.getVoltageLimits();
         assertNotNull(voltageLimits);
         assertEquals(140.0, voltageLimits.getLowVoltage(), 0.0);
         assertEquals(220.0, voltageLimits.getHighVoltage(), 0.0);

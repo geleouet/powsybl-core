@@ -472,7 +472,7 @@ public class UcteExporter implements Exporter {
                 (float) line.getR() * mergedXnode.getRdp(),
                 (float) line.getX() * mergedXnode.getXdp(),
                 (float) line.getB1(),
-                (int) line.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(),
+                (int) line.getCurrentLimits1().getPermanentLimit(),
                 elementName1);
         ucteNetwork.addLine(ucteLine1);
 
@@ -486,7 +486,7 @@ public class UcteExporter implements Exporter {
                 (float) line.getR() * (1.0f - mergedXnode.getRdp()),
                 (float) line.getX() * (1.0f - mergedXnode.getXdp()),
                 (float) line.getB2(),
-                (int) line.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(),
+                (int) line.getCurrentLimits2().getPermanentLimit(),
                 elementName2);
         ucteNetwork.addLine(ucteLine2);
     }
@@ -515,7 +515,7 @@ public class UcteExporter implements Exporter {
                 (float) half1.getR(),
                 (float) half1.getX(),
                 (float) (half1.getB1() + half1.getB2()),
-                (int) tieLine.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(),
+                (int) tieLine.getCurrentLimits1().getPermanentLimit(),
                 elementName1);
         ucteNetwork.addLine(ucteLine1);
 
@@ -530,7 +530,7 @@ public class UcteExporter implements Exporter {
                 (float) half2.getR(),
                 (float) half2.getX(),
                 (float) (half2.getB1() + half2.getB2()),
-                (int) tieLine.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class).getPermanentLimit(),
+                (int) tieLine.getCurrentLimits2().getPermanentLimit(),
                 elementName2);
         ucteNetwork.addLine(ucteLine2);
     }
@@ -838,8 +838,8 @@ public class UcteExporter implements Exporter {
     }
 
     private static Integer getPermanentLimit(Branch<?> branch) {
-        Optional<Double> permanentLimit1 = Optional.ofNullable(branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)).map(CurrentLimits::getPermanentLimit);
-        Optional<Double> permanentLimit2 = Optional.ofNullable(branch.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)).map(CurrentLimits::getPermanentLimit);
+        Optional<Double> permanentLimit1 = Optional.ofNullable(branch.getCurrentLimits1()).map(CurrentLimits::getPermanentLimit);
+        Optional<Double> permanentLimit2 = Optional.ofNullable(branch.getCurrentLimits2()).map(CurrentLimits::getPermanentLimit);
         if (permanentLimit1.isPresent() && permanentLimit2.isPresent()) {
             return (int) Double.min(permanentLimit1.get(), permanentLimit2.get());
         } else  {

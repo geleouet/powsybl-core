@@ -7,7 +7,6 @@
 package com.powsybl.iidm.network.tck;
 
 import com.powsybl.iidm.network.ApparentPowerLimits;
-import com.powsybl.iidm.network.LimitType;
 import com.powsybl.iidm.network.Line;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
@@ -49,7 +48,7 @@ public abstract class AbstractApparentPowerLimitsTest {
 
         // limits1
         assertFalse(l.getOperationalLimits1().isEmpty());
-        ApparentPowerLimits apparentPowerLimits1 = l.getOperationalLimits1(LimitType.APPARENT_POWER, ApparentPowerLimits.class);
+        ApparentPowerLimits apparentPowerLimits1 = l.getApparentPowerLimits1();
         assertNotNull(apparentPowerLimits1);
         assertEquals(300, apparentPowerLimits1.getPermanentLimit(), 0.0);
         assertEquals(2, apparentPowerLimits1.getTemporaryLimits().size());
@@ -60,7 +59,7 @@ public abstract class AbstractApparentPowerLimitsTest {
 
         // limits2
         assertFalse(l.getOperationalLimits2().isEmpty());
-        ApparentPowerLimits apparentPowerLimits2 = l.getOperationalLimits2(LimitType.APPARENT_POWER, ApparentPowerLimits.class);
+        ApparentPowerLimits apparentPowerLimits2 = l.getApparentPowerLimits2();
         assertNotNull(apparentPowerLimits2);
         assertEquals(310, apparentPowerLimits2.getPermanentLimit(), 0.0);
         assertTrue(apparentPowerLimits2.getTemporaryLimits().isEmpty());

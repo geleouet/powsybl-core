@@ -274,23 +274,9 @@ public interface ThreeWindingsTransformer extends Connectable<ThreeWindingsTrans
          */
         Leg setRatedU(double ratedU);
 
-        /**
-         * @deprecated Use {@link #getOperationalLimits(LimitType, Class)} instead as follows:
-         * {@code getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)}.
-         */
-        @Deprecated
-        default CurrentLimits getCurrentLimits() {
-            return getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
-        }
-
         @Override
         default List<OperationalLimits> getOperationalLimits() {
             return Collections.singletonList(getCurrentLimits());
-        }
-
-        @Override
-        default <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
-            return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits() : null;
         }
 
         /**

@@ -118,11 +118,11 @@ public final class AmplUtil {
             }
 
             // limits
-            if (l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
-                createLimitsIds(mapper, l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), l.getId(), "_1_");
+            if (l.getCurrentLimits1() != null) {
+                createLimitsIds(mapper, l.getCurrentLimits1(), l.getId(), "_1_");
             }
-            if (l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null) {
-                createLimitsIds(mapper, l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), l.getId(), "_2_");
+            if (l.getCurrentLimits2() != null) {
+                createLimitsIds(mapper, l.getCurrentLimits2(), l.getId(), "_2_");
             }
         }
     }
@@ -140,11 +140,11 @@ public final class AmplUtil {
             }
 
             // limits
-            if (twt.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
-                createLimitsIds(mapper, twt.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), twt.getId(), "_1_");
+            if (twt.getCurrentLimits1() != null) {
+                createLimitsIds(mapper, twt.getCurrentLimits1(), twt.getId(), "_1_");
             }
-            if (twt.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null) {
-                createLimitsIds(mapper, twt.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), twt.getId(), "_2_");
+            if (twt.getCurrentLimits2() != null) {
+                createLimitsIds(mapper, twt.getCurrentLimits2(), twt.getId(), "_2_");
             }
         }
     }
@@ -167,14 +167,14 @@ public final class AmplUtil {
             }
 
             // limits
-            if (twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
-                createLimitsIds(mapper, twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class), twt.getId() + AmplConstants.LEG1_SUFFIX, "");
+            if (twt.getLeg1().getCurrentLimits() != null) {
+                createLimitsIds(mapper, twt.getLeg1().getCurrentLimits(), twt.getId() + AmplConstants.LEG1_SUFFIX, "");
             }
-            if (twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
-                createLimitsIds(mapper, twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class),  twt.getId() + AmplConstants.LEG2_SUFFIX, "");
+            if (twt.getLeg2().getCurrentLimits() != null) {
+                createLimitsIds(mapper, twt.getLeg2().getCurrentLimits(),  twt.getId() + AmplConstants.LEG2_SUFFIX, "");
             }
-            if (twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
-                createLimitsIds(mapper, twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class),  twt.getId() + AmplConstants.LEG3_SUFFIX, "");
+            if (twt.getLeg3().getCurrentLimits() != null) {
+                createLimitsIds(mapper, twt.getLeg3().getCurrentLimits(),  twt.getId() + AmplConstants.LEG3_SUFFIX, "");
             }
         }
     }

@@ -30,8 +30,8 @@ abstract class AbstractInjectionAdapter<I extends Injection<I>> extends Abstract
     }
 
     @Override
-    public  <L extends OperationalLimits> L getOperationalLimits(LimitType type, Class<L> limitClazz) {
-        return getDelegate().getOperationalLimits(type, limitClazz);
+    public CurrentLimits getCurrentLimits() {
+        return getDelegate().getCurrentLimits();
     }
 
     @Override
@@ -40,13 +40,28 @@ abstract class AbstractInjectionAdapter<I extends Injection<I>> extends Abstract
     }
 
     @Override
+    public ApparentPowerLimits getApparentPowerLimits() {
+        return getDelegate().getApparentPowerLimits();
+    }
+
+    @Override
     public ApparentPowerLimitsAdder newApparentPowerLimits() {
         return getDelegate().newApparentPowerLimits();
     }
 
     @Override
+    public ActivePowerLimits getActivePowerLimits() {
+        return getDelegate().getActivePowerLimits();
+    }
+
+    @Override
     public ActivePowerLimitsAdder newActivePowerLimits() {
         return getDelegate().newActivePowerLimits();
+    }
+
+    @Override
+    public VoltageLimits getVoltageLimits() {
+        return getDelegate().getVoltageLimits();
     }
 
     @Override

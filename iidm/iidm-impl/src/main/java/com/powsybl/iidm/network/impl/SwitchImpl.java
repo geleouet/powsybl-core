@@ -145,8 +145,8 @@ class SwitchImpl extends AbstractIdentifiable<Switch> implements Switch, MultiVa
     }
 
     @Override
-    public <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
-        return operationalLimitsHolder.getOperationalLimits(limitType, limitClazz);
+    public CurrentLimits getCurrentLimits() {
+        return operationalLimitsHolder.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
     }
 
     @Override
@@ -155,13 +155,28 @@ class SwitchImpl extends AbstractIdentifiable<Switch> implements Switch, MultiVa
     }
 
     @Override
+    public ApparentPowerLimits getApparentPowerLimits() {
+        return operationalLimitsHolder.getOperationalLimits(LimitType.APPARENT_POWER, ApparentPowerLimits.class);
+    }
+
+    @Override
     public ApparentPowerLimitsAdder newApparentPowerLimits() {
         return operationalLimitsHolder.newApparentPowerLimits();
     }
 
     @Override
+    public ActivePowerLimits getActivePowerLimits() {
+        return operationalLimitsHolder.getOperationalLimits(LimitType.ACTIVE_POWER, ActivePowerLimits.class);
+    }
+
+    @Override
     public ActivePowerLimitsAdder newActivePowerLimits() {
         return operationalLimitsHolder.newActivePowerLimitsAdder();
+    }
+
+    @Override
+    public VoltageLimits getVoltageLimits() {
+        return operationalLimitsHolder.getOperationalLimits(LimitType.VOLTAGE, VoltageLimits.class);
     }
 
     @Override

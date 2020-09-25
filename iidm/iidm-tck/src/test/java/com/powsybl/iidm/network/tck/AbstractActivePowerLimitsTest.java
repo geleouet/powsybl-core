@@ -7,7 +7,6 @@
 package com.powsybl.iidm.network.tck;
 
 import com.powsybl.iidm.network.ActivePowerLimits;
-import com.powsybl.iidm.network.LimitType;
 import com.powsybl.iidm.network.Line;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
@@ -49,7 +48,7 @@ public abstract class AbstractActivePowerLimitsTest {
 
         // limits1
         assertFalse(l.getOperationalLimits1().isEmpty());
-        ActivePowerLimits limits1 = l.getOperationalLimits1(LimitType.ACTIVE_POWER, ActivePowerLimits.class);
+        ActivePowerLimits limits1 = l.getActivePowerLimits1();
         assertNotNull(limits1);
         assertEquals(350, limits1.getPermanentLimit(), 0.0);
         assertEquals(2, limits1.getTemporaryLimits().size());
@@ -60,7 +59,7 @@ public abstract class AbstractActivePowerLimitsTest {
 
         // limits2
         assertFalse(l.getOperationalLimits2().isEmpty());
-        ActivePowerLimits limits2 = l.getOperationalLimits2(LimitType.ACTIVE_POWER, ActivePowerLimits.class);
+        ActivePowerLimits limits2 = l.getActivePowerLimits2();
         assertNotNull(limits2);
         assertEquals(400, limits2.getPermanentLimit(), 0.0);
         assertTrue(limits2.getTemporaryLimits().isEmpty());

@@ -87,8 +87,8 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
     }
 
     @Override
-    public <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
-        return operationalLimitsHolder1.getOperationalLimits(limitType, limitClazz);
+    public CurrentLimits getCurrentLimits1() {
+        return operationalLimitsHolder1.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
     }
 
     @Override
@@ -97,13 +97,28 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
     }
 
     @Override
+    public ApparentPowerLimits getApparentPowerLimits1() {
+        return operationalLimitsHolder1.getOperationalLimits(LimitType.APPARENT_POWER, ApparentPowerLimits.class);
+    }
+
+    @Override
     public ApparentPowerLimitsAdder newApparentPowerLimits1() {
         return operationalLimitsHolder1.newApparentPowerLimits();
     }
 
     @Override
+    public ActivePowerLimits getActivePowerLimits1() {
+        return operationalLimitsHolder1.getOperationalLimits(LimitType.ACTIVE_POWER, ActivePowerLimits.class);
+    }
+
+    @Override
     public ActivePowerLimitsAdder newActivePowerLimits1() {
         return operationalLimitsHolder1.newActivePowerLimitsAdder();
+    }
+
+    @Override
+    public VoltageLimits getVoltageLimits1() {
+        return operationalLimitsHolder1.getOperationalLimits(LimitType.VOLTAGE, VoltageLimits.class);
     }
 
     @Override
@@ -117,8 +132,8 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
     }
 
     @Override
-    public <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
-        return operationalLimitsHolder2.getOperationalLimits(limitType, limitClazz);
+    public CurrentLimits getCurrentLimits2() {
+        return operationalLimitsHolder2.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
     }
 
     @Override
@@ -127,8 +142,18 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
     }
 
     @Override
+    public ApparentPowerLimits getApparentPowerLimits2() {
+        return operationalLimitsHolder2.getOperationalLimits(LimitType.APPARENT_POWER, ApparentPowerLimits.class);
+    }
+
+    @Override
     public ApparentPowerLimitsAdder newApparentPowerLimits2() {
         return operationalLimitsHolder2.newApparentPowerLimits();
+    }
+
+    @Override
+    public ActivePowerLimits getActivePowerLimits2() {
+        return operationalLimitsHolder2.getOperationalLimits(LimitType.ACTIVE_POWER, ActivePowerLimits.class);
     }
 
     @Override
@@ -137,8 +162,53 @@ abstract class AbstractBranch<I extends Branch<I>> extends AbstractConnectable<I
     }
 
     @Override
+    public VoltageLimits getVoltageLimits2() {
+        return operationalLimitsHolder2.getOperationalLimits(LimitType.VOLTAGE, VoltageLimits.class);
+    }
+
+    @Override
     public VoltageLimitsAdder newVoltageLimits2() {
         return operationalLimitsHolder2.newVoltageLimits();
+    }
+
+    @Override
+    public CurrentLimits getCurrentLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getCurrentLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getCurrentLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
+    }
+
+    @Override
+    public ActivePowerLimits getActivePowerLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getActivePowerLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getActivePowerLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
+    }
+
+    @Override
+    public ApparentPowerLimits getApparentPowerLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getApparentPowerLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getApparentPowerLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
+    }
+
+    @Override
+    public VoltageLimits getVoltageLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getVoltageLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getVoltageLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
     }
 
     OperationalLimitsHolderImpl getLimitsHolder1() {

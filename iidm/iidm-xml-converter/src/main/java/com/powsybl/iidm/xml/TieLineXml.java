@@ -29,7 +29,7 @@ class TieLineXml extends AbstractConnectableXml<TieLine, TieLineAdder, Network> 
 
     @Override
     protected boolean hasSubElements(TieLine tl) {
-        return tl.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null || tl.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null;
+        return tl.getCurrentLimits1() != null || tl.getCurrentLimits2() != null;
     }
 
     private static void writeHalf(TieLine.HalfLine halfLine, NetworkXmlWriterContext context, int side) throws XMLStreamException {
@@ -64,11 +64,11 @@ class TieLineXml extends AbstractConnectableXml<TieLine, TieLineAdder, Network> 
 
     @Override
     protected void writeSubElements(TieLine tl, Network n, NetworkXmlWriterContext context) throws XMLStreamException {
-        if (tl.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
-            writeCurrentLimits(1, tl.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), context.getWriter(), context.getVersion(), context.getOptions());
+        if (tl.getCurrentLimits1() != null) {
+            writeCurrentLimits(1, tl.getCurrentLimits1(), context.getWriter(), context.getVersion(), context.getOptions());
         }
-        if (tl.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null) {
-            writeCurrentLimits(2, tl.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), context.getWriter(), context.getVersion(), context.getOptions());
+        if (tl.getCurrentLimits2() != null) {
+            writeCurrentLimits(2, tl.getCurrentLimits2(), context.getWriter(), context.getVersion(), context.getOptions());
         }
     }
 

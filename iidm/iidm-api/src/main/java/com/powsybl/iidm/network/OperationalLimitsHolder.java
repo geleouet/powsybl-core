@@ -18,7 +18,19 @@ public interface OperationalLimitsHolder {
         return Collections.emptyList();
     }
 
-    default <L extends OperationalLimits> L getOperationalLimits(LimitType type, Class<L> limitClazz) {
+    default CurrentLimits getCurrentLimits() {
+        return null;
+    }
+
+    default ActivePowerLimits getActivePowerLimits() {
+        return null;
+    }
+
+    default ApparentPowerLimits getApparentPowerLimits() {
+        return null;
+    }
+
+    default VoltageLimits getVoltageLimits() {
         return null;
     }
 

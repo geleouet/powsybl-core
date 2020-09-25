@@ -277,22 +277,8 @@ public interface DanglingLine extends Injection<DanglingLine> {
      */
     String getUcteXnodeCode();
 
-    /**
-     * @deprecated Use {@link #getOperationalLimits(LimitType, Class)} instead as follows:
-     * {@code getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)}.
-     */
-    @Deprecated
-    default CurrentLimits getCurrentLimits() {
-        return getOperationalLimits(LimitType.CURRENT, CurrentLimits.class);
-    }
-
     @Override
     default List<OperationalLimits> getOperationalLimits() {
-        return Collections.singletonList(getCurrentLimits());
-    }
-
-    @Override
-    default <L extends OperationalLimits> L getOperationalLimits(LimitType limitType, Class<L> limitClazz) {
-        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits() : null;
+        return getCurrentLimits() != null ? Collections.singletonList(getCurrentLimits()) : Collections.emptyList();
     }
 }

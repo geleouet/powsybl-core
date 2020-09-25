@@ -143,56 +143,14 @@ public interface Branch<I extends Branch<I>> extends Connectable<I>, Operational
 
     Side getSide(Terminal terminal);
 
-    /**
-     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} or {@link #getOperationalLimits2(LimitType, Class)} instead as follows:
-     * {@code getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)} or {@code getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)}.
-     */
-    @Deprecated
-    default CurrentLimits getCurrentLimits(Side side) {
-        if (side == Side.ONE) {
-            return getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class);
-        } else if (side == Side.TWO) {
-            return getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class);
-        }
-        throw new AssertionError("Unexpected side: " + side);
-    }
-
-    /**
-     * @deprecated Use {@link #getOperationalLimits1(LimitType, Class)} instead as follows:
-     * {@code getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)}.
-     */
-    @Deprecated
-    default CurrentLimits getCurrentLimits1() {
-        return getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class);
-    }
-
     @Override
     default List<OperationalLimits> getOperationalLimits1() {
-        return Collections.singletonList(getCurrentLimits1());
-    }
-
-    @Override
-    default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
-        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits1() : null;
-    }
-
-    /**
-     * @deprecated Use {@link #getOperationalLimits2(LimitType, Class)} instead as follows:
-     * {@code getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)}.
-     */
-    @Deprecated
-    default CurrentLimits getCurrentLimits2() {
-        return getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class);
+        return getCurrentLimits1() != null ? Collections.singletonList(getCurrentLimits1()) : Collections.emptyList();
     }
 
     @Override
     default List<OperationalLimits> getOperationalLimits2() {
-        return Collections.singletonList(getCurrentLimits2());
-    }
-
-    @Override
-    default <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
-        return limitType == LimitType.CURRENT && limitClazz == CurrentLimits.class ? (L) getCurrentLimits2() : null;
+        return getCurrentLimits2() != null ? Collections.singletonList(getCurrentLimits2()) : Collections.emptyList();
     }
 
     boolean isOverloaded();

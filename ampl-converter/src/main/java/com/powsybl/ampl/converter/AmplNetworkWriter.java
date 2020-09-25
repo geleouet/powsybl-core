@@ -611,7 +611,7 @@ public class AmplNetworkWriter {
                         .writeCell(-tl.getHalf1().getXnodeP()) // xnode node flow side 1
                         .writeCell(t1.getQ())
                         .writeCell(-tl.getHalf1().getXnodeQ()) // xnode node flow side 1
-                        .writeCell(getPermanentLimit(l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
+                        .writeCell(getPermanentLimit(l.getCurrentLimits1()))
                         .writeCell(Float.NaN)
                         .writeCell(merged)
                         .writeCell(faultNum)
@@ -639,7 +639,7 @@ public class AmplNetworkWriter {
                         .writeCell(-tl.getHalf2().getXnodeQ()) // xnode node flow side 2
                         .writeCell(t2.getQ())
                         .writeCell(Float.NaN)
-                        .writeCell(getPermanentLimit(l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)))
+                        .writeCell(getPermanentLimit(l.getCurrentLimits2()))
                         .writeCell(merged)
                         .writeCell(faultNum)
                         .writeCell(actionNum)
@@ -666,8 +666,8 @@ public class AmplNetworkWriter {
                         .writeCell(t2.getP())
                         .writeCell(t1.getQ())
                         .writeCell(t2.getQ())
-                        .writeCell(getPermanentLimit(l.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
-                        .writeCell(getPermanentLimit(l.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)))
+                        .writeCell(getPermanentLimit(l.getCurrentLimits1()))
+                        .writeCell(getPermanentLimit(l.getCurrentLimits2()))
                         .writeCell(merged)
                         .writeCell(faultNum)
                         .writeCell(actionNum)
@@ -751,8 +751,8 @@ public class AmplNetworkWriter {
                     .writeCell(t2.getP())
                     .writeCell(t1.getQ())
                     .writeCell(t2.getQ())
-                    .writeCell(getPermanentLimit(twt.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class)))
-                    .writeCell(getPermanentLimit(twt.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class)))
+                    .writeCell(getPermanentLimit(twt.getCurrentLimits1()))
+                    .writeCell(getPermanentLimit(twt.getCurrentLimits2()))
                     .writeCell(false) // TODO to update
                     .writeCell(faultNum)
                     .writeCell(actionNum)
@@ -843,7 +843,7 @@ public class AmplNetworkWriter {
                         .writeCell(Double.NaN)
                         .writeCell(t1.getQ())
                         .writeCell(Double.NaN)
-                        .writeCell(getPermanentLimit(twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)))
+                        .writeCell(getPermanentLimit(twt.getLeg1().getCurrentLimits()))
                         .writeCell(false)
                         .writeCell(faultNum)
                         .writeCell(actionNum)
@@ -872,7 +872,7 @@ public class AmplNetworkWriter {
                         .writeCell(Double.NaN)
                         .writeCell(t2.getQ())
                         .writeCell(Double.NaN)
-                        .writeCell(getPermanentLimit(twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)))
+                        .writeCell(getPermanentLimit(twt.getLeg2().getCurrentLimits()))
                         .writeCell(Double.NaN)
                         .writeCell(false)
                         .writeCell(faultNum)
@@ -902,7 +902,7 @@ public class AmplNetworkWriter {
                         .writeCell(Double.NaN)
                         .writeCell(t3.getQ())
                         .writeCell(Double.NaN)
-                        .writeCell(getPermanentLimit(twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class)))
+                        .writeCell(getPermanentLimit(twt.getLeg3().getCurrentLimits()))
                         .writeCell(Double.NaN)
                         .writeCell(false)
                         .writeCell(faultNum)
@@ -1654,28 +1654,28 @@ public class AmplNetworkWriter {
     private void writeBranchCurrentLimits(TableFormatter formatter) throws IOException {
         for (Branch<?> branch : network.getBranches()) {
             String branchId = branch.getId();
-            if (branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class) != null) {
-                writeTemporaryCurrentLimits(branch.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, true, "_1_");
+            if (branch.getCurrentLimits1() != null) {
+                writeTemporaryCurrentLimits(branch.getCurrentLimits1(), formatter, branchId, true, "_1_");
             }
-            if (branch.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class) != null) {
-                writeTemporaryCurrentLimits(branch.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, false, "_2_");
+            if (branch.getCurrentLimits2() != null) {
+                writeTemporaryCurrentLimits(branch.getCurrentLimits2(), formatter, branchId, false, "_2_");
             }
         }
     }
 
     private void writeThreeWindingsTransformerCurrentLimits(TableFormatter formatter) throws IOException {
         for (ThreeWindingsTransformer twt : network.getThreeWindingsTransformers()) {
-            if (twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
+            if (twt.getLeg1().getCurrentLimits() != null) {
                 String branchId = twt.getId() + AmplConstants.LEG1_SUFFIX;
-                writeTemporaryCurrentLimits(twt.getLeg1().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, false, "");
+                writeTemporaryCurrentLimits(twt.getLeg1().getCurrentLimits(), formatter, branchId, false, "");
             }
-            if (twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
+            if (twt.getLeg2().getCurrentLimits() != null) {
                 String branchId = twt.getId() + AmplConstants.LEG2_SUFFIX;
-                writeTemporaryCurrentLimits(twt.getLeg2().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, true, "");
+                writeTemporaryCurrentLimits(twt.getLeg2().getCurrentLimits(), formatter, branchId, true, "");
             }
-            if (twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class) != null) {
+            if (twt.getLeg3().getCurrentLimits() != null) {
                 String branchId = twt.getId() + AmplConstants.LEG3_SUFFIX;
-                writeTemporaryCurrentLimits(twt.getLeg3().getOperationalLimits(LimitType.CURRENT, CurrentLimits.class), formatter, branchId, true, "");
+                writeTemporaryCurrentLimits(twt.getLeg3().getCurrentLimits(), formatter, branchId, true, "");
             }
         }
     }

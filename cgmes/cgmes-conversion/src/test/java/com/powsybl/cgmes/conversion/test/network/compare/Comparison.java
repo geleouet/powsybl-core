@@ -487,11 +487,11 @@ public class Comparison {
         compare("g2", expected.getG2(), actual.getG2());
         compare("b2", expected.getB2(), actual.getB2());
         compareCurrentLimits(expected, actual,
-                expected.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class),
-                actual.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
+                expected.getCurrentLimits1(),
+                actual.getCurrentLimits1());
         compareCurrentLimits(expected, actual,
-                expected.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class),
-                actual.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
+                expected.getCurrentLimits2(),
+                actual.getCurrentLimits2());
     }
 
     private void compareDanglingLines(DanglingLine expected, DanglingLine actual) {
@@ -548,11 +548,11 @@ public class Comparison {
         compare("ratedU1", expected.getRatedU1(), actual.getRatedU1());
         compare("ratedU2", expected.getRatedU2(), actual.getRatedU2());
         compareCurrentLimits(expected, actual,
-                expected.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class),
-                actual.getOperationalLimits1(LimitType.CURRENT, CurrentLimits.class));
+                expected.getCurrentLimits1(),
+                actual.getCurrentLimits1());
         compareCurrentLimits(expected, actual,
-                expected.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class),
-                actual.getOperationalLimits2(LimitType.CURRENT, CurrentLimits.class));
+                expected.getCurrentLimits2(),
+                actual.getCurrentLimits2());
 
         compareRatioTapChanger(expected.getRatioTapChanger(), actual.getRatioTapChanger());
         comparePhaseTapChanger(expected.getPhaseTapChanger(), actual.getPhaseTapChanger());
@@ -608,8 +608,8 @@ public class Comparison {
 
         compare("ratedU", expected.getRatedU(), actual.getRatedU());
         compareCurrentLimits(expectedt, actualt,
-                expected.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class),
-                actual.getOperationalLimits(LimitType.CURRENT, CurrentLimits.class));
+                expected.getCurrentLimits(),
+                actual.getCurrentLimits());
         compareRatioTapChanger(expected.getRatioTapChanger(), actual.getRatioTapChanger());
         comparePhaseTapChanger(expected.getPhaseTapChanger(), actual.getPhaseTapChanger());
     }

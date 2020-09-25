@@ -18,8 +18,72 @@ public interface OperationalLimitsSidedHolder {
         return Collections.emptyList();
     }
 
-    default <L extends OperationalLimits> L getOperationalLimits1(LimitType limitType, Class<L> limitClazz) {
+    default CurrentLimits getCurrentLimits1() {
         return null;
+    }
+
+    default ActivePowerLimits getActivePowerLimits1() {
+        return null;
+    }
+
+    default ApparentPowerLimits getApparentPowerLimits1() {
+        return null;
+    }
+
+    default VoltageLimits getVoltageLimits1() {
+        return null;
+    }
+
+    default CurrentLimits getCurrentLimits2() {
+        return null;
+    }
+
+    default ActivePowerLimits getActivePowerLimits2() {
+        return null;
+    }
+
+    default ApparentPowerLimits getApparentPowerLimits2() {
+        return null;
+    }
+
+    default VoltageLimits getVoltageLimits2() {
+        return null;
+    }
+
+    default CurrentLimits getCurrentLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getCurrentLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getCurrentLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
+    }
+
+    default ActivePowerLimits getActivePowerLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getActivePowerLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getActivePowerLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
+    }
+
+    default ApparentPowerLimits getApparentPowerLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getApparentPowerLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getApparentPowerLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
+    }
+
+    default VoltageLimits getVoltageLimits(Branch.Side side) {
+        if (side == Branch.Side.ONE) {
+            return getVoltageLimits1();
+        } else if (side == Branch.Side.TWO) {
+            return getVoltageLimits2();
+        }
+        throw new AssertionError("Unexpected side: " + side);
     }
 
     default CurrentLimitsAdder newCurrentLimits1() {
@@ -40,10 +104,6 @@ public interface OperationalLimitsSidedHolder {
 
     default List<OperationalLimits> getOperationalLimits2() {
         return Collections.emptyList();
-    }
-
-    default <L extends OperationalLimits> L getOperationalLimits2(LimitType limitType, Class<L> limitClazz) {
-        return null;
     }
 
     default CurrentLimitsAdder newCurrentLimits2() {
