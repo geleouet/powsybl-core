@@ -10,6 +10,8 @@ import java.util.Objects;
 
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.ValidationException;
+import com.powsybl.iidm.network.impl.util.Ref;
+import gnu.trove.list.array.TDoubleArrayList;
 
 /**
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
@@ -21,8 +23,6 @@ class TieLineImpl extends LineImpl implements TieLine {
         TieLineImpl parent;
         String id;
         String name;
-        double xnodeP = Double.NaN;
-        double xnodeQ = Double.NaN;
         double r = Double.NaN;
         double x = Double.NaN;
         double g1 = Double.NaN;
@@ -31,8 +31,45 @@ class TieLineImpl extends LineImpl implements TieLine {
         double b2 = Double.NaN;
         boolean fictitious = false;
 
-        private void setParent(TieLineImpl parent) {
+        double initXnodeV = Double.NaN;
+        double initXnodeAngle = Double.NaN;
+        double initXnodeP = Double.NaN;
+        double initXnodeQ = Double.NaN;
+
+        TDoubleArrayList xnodeV;
+        TDoubleArrayList xnodeAngle;
+        TDoubleArrayList xnodeP;
+        TDoubleArrayList xnodeQ;
+
+        void setInitXnodeV(double initXnodeV) {
+            this.initXnodeV = initXnodeV;
+        }
+
+        void setInitXnodeAngle(double initXnodeAngle) {
+            this.initXnodeAngle = initXnodeAngle;
+        }
+
+        void setInitXnodeP(double initXnodeP) {
+            this.initXnodeP = initXnodeP;
+        }
+
+        void setInitXnodeQ(double initXnodeQ) {
+            this.initXnodeQ = initXnodeQ;
+        }
+
+        private void setParent(Ref<? extends VariantManagerHolder> network, TieLineImpl parent) {
             this.parent = parent;
+            int variantArraySize = network.get().getVariantManager().getVariantArraySize();
+            xnodeV = new TDoubleArrayList(variantArraySize);
+            xnodeAngle = new TDoubleArrayList(variantArraySize);
+            xnodeP = new TDoubleArrayList(variantArraySize);
+            xnodeQ = new TDoubleArrayList(variantArraySize);
+            for (int i = 0; i < variantArraySize; i++) {
+                xnodeV.add(initXnodeV);
+                xnodeAngle.add(initXnodeAngle);
+                xnodeP.add(initXnodeP);
+                xnodeQ.add(initXnodeQ);
+            }
         }
 
         private void notifyUpdate(String attribute, Object oldValue, Object newValue) {
@@ -64,28 +101,57 @@ class TieLineImpl extends LineImpl implements TieLine {
         }
 
         @Override
-        public double getXnodeP() {
-            return xnodeP;
+        public double getXnodeV() {
+            return xnodeV.get(parent.getNetwork().getVariantIndex());
         }
 
         @Override
-        public HalfLineImpl setXnodeP(double xnodeP) {
-            double oldValue = this.xnodeP;
-            this.xnodeP = xnodeP;
-            notifyUpdate("xnodeP", oldValue, xnodeP);
+        public HalfLineImpl setXnodeV(double v) {
+            if (v < 0) {
+                throw new ValidationException(parent, "voltage of boundary point cannot be < 0");
+            }
+            int variantIndex = parent.getNetwork().getVariantIndex();
+            double oldValue = xnodeV.set(variantIndex, v);
+            notifyUpdate("xnodeV", oldValue, v);
+            return this;
+        }
+
+        @Override
+        public double getXnodeAngle() {
+            return xnodeAngle.get(parent.getNetwork().getVariantIndex());
+        }
+
+        @Override
+        public HalfLineImpl setXnodeAngle(double angle) {
+            int variantIndex = parent.getNetwork().getVariantIndex();
+            double oldValue = xnodeAngle.set(variantIndex, angle);
+            notifyUpdate("xnodeAngle", oldValue, angle);
+            return this;
+        }
+
+        @Override
+        public double getXnodeP() {
+            return xnodeP.get(parent.getNetwork().getVariantIndex());
+        }
+
+        @Override
+        public HalfLineImpl setXnodeP(double p) {
+            int variantIndex = parent.getNetwork().getVariantIndex();
+            double oldValue = xnodeP.set(variantIndex, p);
+            notifyUpdate("xnodeP", oldValue, p);
             return this;
         }
 
         @Override
         public double getXnodeQ() {
-            return xnodeQ;
+            return xnodeQ.get(parent.getNetwork().getRef().get().getVariantIndex());
         }
 
         @Override
-        public HalfLineImpl setXnodeQ(double xnodeQ) {
-            double oldValue = this.xnodeQ;
-            this.xnodeQ = xnodeQ;
-            notifyUpdate("xnodeQ", oldValue, xnodeQ);
+        public HalfLineImpl setXnodeQ(double q) {
+            int variantIndex = parent.getNetwork().getVariantIndex();
+            double oldValue = xnodeQ.set(variantIndex, q);
+            notifyUpdate("xnodeQ", oldValue, q);
             return this;
         }
 
@@ -183,6 +249,36 @@ class TieLineImpl extends LineImpl implements TieLine {
         private String getHalfLineAttribute() {
             return this == parent.half1 ? "half1" : "half2";
         }
+
+        void extendVariantArraySize(int number, int sourceIndex) {
+            xnodeV.ensureCapacity(xnodeV.size() + number);
+            xnodeAngle.ensureCapacity(xnodeAngle.size() + number);
+            xnodeP.ensureCapacity(xnodeP.size() + number);
+            xnodeQ.ensureCapacity(xnodeQ.size() + number);
+            for (int i = 0; i < number; i++) {
+                xnodeV.add(xnodeV.get(sourceIndex));
+                xnodeAngle.add(xnodeAngle.get(sourceIndex));
+                xnodeP.add(xnodeP.get(sourceIndex));
+                xnodeQ.add(xnodeQ.get(sourceIndex));
+            }
+        }
+
+        void reduceVariantArraySize(int number) {
+            xnodeV.remove(xnodeV.size() - number, number);
+            xnodeAngle.remove(xnodeAngle.size() - number, number);
+            xnodeP.remove(xnodeP.size() - number, number);
+            xnodeQ.remove(xnodeQ.size() - number, number);
+
+        }
+
+        void allocateVariantArrayElement(int[] indexes, int sourceIndex) {
+            for (int index : indexes) {
+                xnodeV.set(index, xnodeV.get(sourceIndex));
+                xnodeAngle.set(index, xnodeAngle.get(sourceIndex));
+                xnodeP.set(index, xnodeP.get(sourceIndex));
+                xnodeQ.set(index, xnodeQ.get(sourceIndex));
+            }
+        }
     }
 
     private final String ucteXnodeCode;
@@ -191,15 +287,15 @@ class TieLineImpl extends LineImpl implements TieLine {
 
     private final HalfLineImpl half2;
 
-    TieLineImpl(String id, String name, boolean fictitious, String ucteXnodeCode, HalfLineImpl half1, HalfLineImpl half2) {
+    TieLineImpl(Ref<? extends VariantManagerHolder> network, String id, String name, boolean fictitious, String ucteXnodeCode, HalfLineImpl half1, HalfLineImpl half2) {
         super(id, name, fictitious, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
         this.ucteXnodeCode = ucteXnodeCode;
-        this.half1 = attach(half1);
-        this.half2 = attach(half2);
+        this.half1 = attach(network, half1);
+        this.half2 = attach(network, half2);
     }
 
-    private HalfLineImpl attach(HalfLineImpl half) {
-        half.setParent(this);
+    private HalfLineImpl attach(Ref<? extends VariantManagerHolder> network, HalfLineImpl half) {
+        half.setParent(network, this);
         return half;
     }
 
@@ -297,5 +393,29 @@ class TieLineImpl extends LineImpl implements TieLine {
     @Override
     public LineImpl setB2(double b2) {
         throw createNotSupportedForTieLines();
+    }
+
+    @Override
+    public void extendVariantArraySize(int initVariantArraySize, int number, int sourceIndex) {
+        super.extendVariantArraySize(initVariantArraySize, number, sourceIndex);
+
+        half1.extendVariantArraySize(number, sourceIndex);
+        half2.extendVariantArraySize(number, sourceIndex);
+    }
+
+    @Override
+    public void reduceVariantArraySize(int number) {
+        super.reduceVariantArraySize(number);
+
+        half1.reduceVariantArraySize(number);
+        half2.reduceVariantArraySize(number);
+    }
+
+    @Override
+    public void allocateVariantArrayElement(int[] indexes, int sourceIndex) {
+        super.allocateVariantArrayElement(indexes, sourceIndex);
+
+        half1.allocateVariantArrayElement(indexes, sourceIndex);
+        half2.allocateVariantArrayElement(indexes, sourceIndex);
     }
 }

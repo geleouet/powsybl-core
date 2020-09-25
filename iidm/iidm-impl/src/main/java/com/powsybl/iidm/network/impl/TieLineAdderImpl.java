@@ -130,14 +130,26 @@ class TieLineAdderImpl extends AbstractBranchAdder<TieLineAdderImpl> implements 
     }
 
     @Override
+    public TieLineAdderImpl setXnodeV(double xnodeV) {
+        getActiveHalf().setInitXnodeV(xnodeV);
+        return this;
+    }
+
+    @Override
+    public TieLineAdderImpl setXnodeAngle(double xnodeAngle) {
+        getActiveHalf().setInitXnodeAngle(xnodeAngle);
+        return this;
+    }
+
+    @Override
     public TieLineAdderImpl setXnodeP(double xnodeP) {
-        getActiveHalf().setXnodeP(xnodeP);
+        getActiveHalf().setInitXnodeP(xnodeP);
         return this;
     }
 
     @Override
     public TieLineAdderImpl setXnodeQ(double xnodeQ) {
-        getActiveHalf().setXnodeQ(xnodeQ);
+        getActiveHalf().setInitXnodeQ(xnodeQ);
         return this;
     }
 
@@ -163,10 +175,10 @@ class TieLineAdderImpl extends AbstractBranchAdder<TieLineAdderImpl> implements 
         if (Double.isNaN(half.b2)) {
             throw new ValidationException(this, "b2 is not set for half line " + num);
         }
-        if (Double.isNaN(half.xnodeP)) {
+        if (Double.isNaN(half.initXnodeP)) {
             throw new ValidationException(this, "xnodeP is not set for half line " + num);
         }
-        if (Double.isNaN(half.xnodeQ)) {
+        if (Double.isNaN(half.initXnodeQ)) {
             throw new ValidationException(this, "xnodeQ is not set for half line " + num);
         }
     }
@@ -189,7 +201,7 @@ class TieLineAdderImpl extends AbstractBranchAdder<TieLineAdderImpl> implements 
         voltageLevel1.attach(terminal1, true);
         voltageLevel2.attach(terminal2, true);
 
-        TieLineImpl line = new TieLineImpl(id, getName(), isFictitious(), ucteXnodeCode, half1, half2);
+        TieLineImpl line = new TieLineImpl(getNetwork().getRef(), id, getName(), isFictitious(), ucteXnodeCode, half1, half2);
         terminal1.setNum(1);
         terminal2.setNum(2);
         line.addTerminal(terminal1);
