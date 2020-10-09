@@ -128,12 +128,10 @@ class TieLineImpl extends LineImpl implements TieLine {
             return xnodeP.get(parent.getNetwork().getVariantIndex());
         }
 
-        @Override
-        public HalfLineImpl setXnodeP(double p) {
+        private void setXnodeP(double p) {
             int variantIndex = parent.getNetwork().getVariantIndex();
             double oldValue = xnodeP.set(variantIndex, p);
             notifyUpdate("xnodeP", oldValue, p);
-            return this;
         }
 
         @Override
@@ -141,12 +139,10 @@ class TieLineImpl extends LineImpl implements TieLine {
             return xnodeQ.get(parent.getNetwork().getRef().get().getVariantIndex());
         }
 
-        @Override
-        public HalfLineImpl setXnodeQ(double q) {
+        private void setXnodeQ(double q) {
             int variantIndex = parent.getNetwork().getVariantIndex();
             double oldValue = xnodeQ.set(variantIndex, q);
             notifyUpdate("xnodeQ", oldValue, q);
-            return this;
         }
 
         @Override
