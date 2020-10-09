@@ -317,8 +317,8 @@ class TieLineImpl extends LineImpl implements TieLine {
         double p2 = getTerminal2().getP();
         if (!Double.isNaN(p1) && !Double.isNaN(p2)) {
             double losses = p1 + p2;
-            half1.setXnodeP((p1 + losses / 2.0) * Math.signum(p2));
-            half2.setXnodeP((p2 + losses / 2.0) * Math.signum(p1));
+            half1.setXnodeP((p1 + losses / 2.0) * (p2 >= 0 ? 1 : -1));
+            half2.setXnodeP((p2 + losses / 2.0) * (p1 >= 0 ? 1 : -1));
         }
     }
 
@@ -328,8 +328,8 @@ class TieLineImpl extends LineImpl implements TieLine {
         double q2 = getTerminal2().getQ();
         if (!Double.isNaN(q1) && !Double.isNaN(q2)) {
             double losses = q1 + q2;
-            half1.setXnodeQ((q1 + losses / 2.0) * Math.signum(q2));
-            half2.setXnodeQ((q2 + losses / 2.0) * Math.signum(q1));
+            half1.setXnodeQ((q1 + losses / 2.0) * (q2 >= 0 ? 1 : -1));
+            half2.setXnodeQ((q2 + losses / 2.0) * (q1 >= 0 ? 1 : -1));
         }
     }
 
