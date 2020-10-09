@@ -8,6 +8,7 @@ package com.powsybl.iidm.network.impl;
 
 import java.util.Objects;
 
+import com.powsybl.iidm.network.Bus;
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.ValidationException;
 import com.powsybl.iidm.network.impl.util.Ref;
@@ -105,15 +106,10 @@ class TieLineImpl extends LineImpl implements TieLine {
             return xnodeV.get(parent.getNetwork().getVariantIndex());
         }
 
-        @Override
-        public HalfLineImpl setXnodeV(double v) {
-            if (v < 0) {
-                throw new ValidationException(parent, "voltage of boundary point cannot be < 0");
-            }
+        private void setXnodeV(double v) {
             int variantIndex = parent.getNetwork().getVariantIndex();
             double oldValue = xnodeV.set(variantIndex, v);
             notifyUpdate("xnodeV", oldValue, v);
-            return this;
         }
 
         @Override
@@ -121,12 +117,10 @@ class TieLineImpl extends LineImpl implements TieLine {
             return xnodeAngle.get(parent.getNetwork().getVariantIndex());
         }
 
-        @Override
-        public HalfLineImpl setXnodeAngle(double angle) {
+        private void setXnodeAngle(double angle) {
             int variantIndex = parent.getNetwork().getVariantIndex();
             double oldValue = xnodeAngle.set(variantIndex, angle);
             notifyUpdate("xnodeAngle", oldValue, angle);
-            return this;
         }
 
         @Override
@@ -297,6 +291,50 @@ class TieLineImpl extends LineImpl implements TieLine {
     private HalfLineImpl attach(Ref<? extends VariantManagerHolder> network, HalfLineImpl half) {
         half.setParent(network, this);
         return half;
+    }
+
+    void computeAndSetXnodeV() {
+        // TODO(MRA): depending on the b/g in the middle of the TieLine, this computation is not correct
+        Bus b1 = getTerminal1().getBusView().getBus();
+        Bus b2 = getTerminal2().getBusView().getBus();
+        if (b1 != null && b2 != null && !Double.isNaN(b1.getV()) && !Double.isNaN(b2.getV())) {
+            double v = (b1.getV() + b2.getV()) / 2.0;
+            half1.setXnodeV(v);
+            half2.setXnodeV(v);
+        }
+    }
+
+    void computeAndSetXnodeAngle() {
+        // TODO(MRA): depending on the b/g in the middle of the TieLine, this computation is not correct
+        Bus b1 = getTerminal1().getBusView().getBus();
+        Bus b2 = getTerminal2().getBusView().getBus();
+        if (b1 != null && b2 != null && !Double.isNaN(b1.getAngle()) && !Double.isNaN(b2.getAngle())) {
+            double angle = (b1.getAngle() + b2.getAngle()) / 2.0;
+            half1.setXnodeAngle(angle);
+            half2.setXnodeAngle(angle);
+        }
+    }
+
+    void computeAndSetXnodeP() {
+        // TODO(mathbagu): depending on the b/g in the middle of the TieLine, this computation is not correct
+        double p1 = getTerminal1().getP();
+        double p2 = getTerminal2().getP();
+        if (!Double.isNaN(p1) && !Double.isNaN(p2)) {
+            double losses = p1 + p2;
+            half1.setXnodeP((p1 + losses / 2.0) * Math.signum(p2));
+            half2.setXnodeP((p2 + losses / 2.0) * Math.signum(p1));
+        }
+    }
+
+    void computeAndSetXnodeQ() {
+        // TODO(mathbagu): depending on the b/g in the middle of the TieLine, this computation is not correct
+        double q1 = getTerminal1().getQ();
+        double q2 = getTerminal2().getQ();
+        if (!Double.isNaN(q1) && !Double.isNaN(q2)) {
+            double losses = q1 + q2;
+            half1.setXnodeQ((q1 + losses / 2.0) * Math.signum(q2));
+            half2.setXnodeQ((q2 + losses / 2.0) * Math.signum(q1));
+        }
     }
 
     @Override
