@@ -8,10 +8,10 @@ package com.powsybl.iidm.network.impl;
 
 import java.util.Objects;
 
-import com.powsybl.iidm.network.Bus;
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.ValidationException;
 import com.powsybl.iidm.network.impl.util.Ref;
+import com.powsybl.iidm.network.util.XnodeValuesComputation;
 import gnu.trove.list.array.TDoubleArrayList;
 
 /**
@@ -290,47 +290,19 @@ class TieLineImpl extends LineImpl implements TieLine {
     }
 
     void computeAndSetXnodeV() {
-        // TODO(MRA): depending on the b/g in the middle of the TieLine, this computation is not correct
-        Bus b1 = getTerminal1().getBusView().getBus();
-        Bus b2 = getTerminal2().getBusView().getBus();
-        if (b1 != null && b2 != null && !Double.isNaN(b1.getV()) && !Double.isNaN(b2.getV())) {
-            double v = (b1.getV() + b2.getV()) / 2.0;
-            half1.setXnodeV(v);
-            half2.setXnodeV(v);
-        }
+        XnodeValuesComputation.computeAndSetXnodeV(this, (half, v) -> ((HalfLineImpl) half).setXnodeV(v));
     }
 
     void computeAndSetXnodeAngle() {
-        // TODO(MRA): depending on the b/g in the middle of the TieLine, this computation is not correct
-        Bus b1 = getTerminal1().getBusView().getBus();
-        Bus b2 = getTerminal2().getBusView().getBus();
-        if (b1 != null && b2 != null && !Double.isNaN(b1.getAngle()) && !Double.isNaN(b2.getAngle())) {
-            double angle = (b1.getAngle() + b2.getAngle()) / 2.0;
-            half1.setXnodeAngle(angle);
-            half2.setXnodeAngle(angle);
-        }
+        XnodeValuesComputation.computeAndSetXnodeAngle(this, (half, angle) -> ((HalfLineImpl) half).setXnodeAngle(angle));
     }
 
     void computeAndSetXnodeP() {
-        // TODO(mathbagu): depending on the b/g in the middle of the TieLine, this computation is not correct
-        double p1 = getTerminal1().getP();
-        double p2 = getTerminal2().getP();
-        if (!Double.isNaN(p1) && !Double.isNaN(p2)) {
-            double losses = p1 + p2;
-            half1.setXnodeP((p1 + losses / 2.0) * (p2 >= 0 ? 1 : -1));
-            half2.setXnodeP((p2 + losses / 2.0) * (p1 >= 0 ? 1 : -1));
-        }
+        XnodeValuesComputation.computeAndSetXnodeP(this, (half, p) -> ((HalfLineImpl) half).setXnodeP(p));
     }
 
     void computeAndSetXnodeQ() {
-        // TODO(mathbagu): depending on the b/g in the middle of the TieLine, this computation is not correct
-        double q1 = getTerminal1().getQ();
-        double q2 = getTerminal2().getQ();
-        if (!Double.isNaN(q1) && !Double.isNaN(q2)) {
-            double losses = q1 + q2;
-            half1.setXnodeQ((q1 + losses / 2.0) * (q2 >= 0 ? 1 : -1));
-            half2.setXnodeQ((q2 + losses / 2.0) * (q1 >= 0 ? 1 : -1));
-        }
+        XnodeValuesComputation.computeAndSetXnodeQ(this, (half, q) -> ((HalfLineImpl) half).setXnodeQ(q));
     }
 
     @Override
