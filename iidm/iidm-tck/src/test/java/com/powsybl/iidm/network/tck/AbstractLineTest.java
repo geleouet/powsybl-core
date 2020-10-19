@@ -429,6 +429,10 @@ public abstract class AbstractLineTest {
         // Check no notification
         verifyNoMoreInteractions(mockedListener);
 
+        assertXnodesValues(tieLine);
+    }
+
+    private static void assertXnodesValues(TieLine tieLine) {
         double p1 = 1.0;
         double q1 = Math.sqrt(2);
         double p2 = -0.9;
