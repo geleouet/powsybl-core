@@ -289,20 +289,22 @@ class TieLineImpl extends LineImpl implements TieLine {
         return half;
     }
 
-    void computeAndSetXnodeV() {
-        XnodeValuesComputation.computeAndSetXnodeV(this, (half, v) -> ((HalfLineImpl) half).setXnodeV(v));
+    void computeAndSetXnodeHalf1() {
+        XnodeValuesComputation.computeAndSetXnodeValues(half1, getTerminal1(), sv -> {
+            half1.setXnodeP(sv.getP());
+            half1.setXnodeQ(sv.getQ());
+            half1.setXnodeV(sv.getU());
+            half1.setXnodeAngle(sv.getA());
+        });
     }
 
-    void computeAndSetXnodeAngle() {
-        XnodeValuesComputation.computeAndSetXnodeAngle(this, (half, angle) -> ((HalfLineImpl) half).setXnodeAngle(angle));
-    }
-
-    void computeAndSetXnodeP() {
-        XnodeValuesComputation.computeAndSetXnodeP(this, (half, p) -> ((HalfLineImpl) half).setXnodeP(p));
-    }
-
-    void computeAndSetXnodeQ() {
-        XnodeValuesComputation.computeAndSetXnodeQ(this, (half, q) -> ((HalfLineImpl) half).setXnodeQ(q));
+    void computeAndSetXnodeHalf2() {
+        XnodeValuesComputation.computeAndSetXnodeValues(half2, getTerminal2(), sv -> {
+            half2.setXnodeP(sv.getP());
+            half2.setXnodeQ(sv.getQ());
+            half2.setXnodeV(sv.getU());
+            half2.setXnodeAngle(sv.getA());
+        });
     }
 
     @Override

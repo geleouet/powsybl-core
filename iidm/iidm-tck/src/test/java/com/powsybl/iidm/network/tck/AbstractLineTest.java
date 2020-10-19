@@ -9,6 +9,7 @@ package com.powsybl.iidm.network.tck;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.test.NoEquipmentNetworkFactory;
+import com.powsybl.iidm.network.util.SV;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -287,20 +288,20 @@ public abstract class AbstractLineTest {
 
     @Test
     public void testTieLineAdder() {
-        double r = 10.0;
-        double r2 = 1.0;
-        double x = 20.0;
-        double x2 = 2.0;
-        double hl1g1 = 30.0;
-        double hl1g2 = 35.0;
-        double hl1b1 = 40.0;
-        double hl1b2 = 45.0;
-        double hl2g1 = 130.0;
-        double hl2g2 = 135.0;
-        double hl2b1 = 140.0;
-        double hl2b2 = 145.0;
-        double xnodeP = 50.0;
-        double xnodeQ = 60.0;
+        double r = 3.0;
+        double r2 = 0.24 / 1300 * (380 * 380 / 100.0);
+        double x = 33.0;
+        double x2 = Math.sqrt(10 * 10 - 0.24 * 0.24) / 1300 * (380 * 380 / 100.0);
+        double hl1g1 = 0;
+        double hl1g2 = 0;
+        double hl1b1 = 386E-6 / 2.0;
+        double hl1b2 = 386E-6 / 2.0;
+        double hl2g1 = 0;
+        double hl2g2 = 0;
+        double hl2b1 = 0;
+        double hl2b2 = 0;
+        double xnodeP = 0;
+        double xnodeQ = 0;
 
         // adder
         TieLine tieLine = network.newTieLine().setId("testTie")
@@ -437,31 +438,29 @@ public abstract class AbstractLineTest {
         double q1 = Math.sqrt(2);
         double p2 = -0.9;
         double q2 = -1.42;
-        tieLine.getTerminal1().setP(p1).setQ(q1);
-        tieLine.getTerminal2().setP(p2).setQ(q2);
-        double pLosses = p1 + p2;
-        double qLosses = q1 + q2;
-        double expectedXnodeP1 = (p1 + pLosses / 2.0) * Math.signum(p2);
-        double expectedXnodeQ1 = (q1 + qLosses / 2.0) * Math.signum(q2);
-        double expectedXnodeP2 = (p2 + pLosses / 2.0) * Math.signum(p1);
-        double expectedXnodeQ2 = (q2 + qLosses / 2.0) * Math.signum(q1);
-        assertEquals(expectedXnodeP1, tieLine.getHalf1().getXnodeP(), 0.0d);
-        assertEquals(expectedXnodeQ1, tieLine.getHalf1().getXnodeQ(), 0.0d);
-        assertEquals(expectedXnodeP2, tieLine.getHalf2().getXnodeP(), 0.0d);
-        assertEquals(expectedXnodeQ2, tieLine.getHalf2().getXnodeQ(), 0.0d);
 
         double v1 = 380;
         double angle1 = -18.5;
         double v2 = 240;
         double angle2 = -17.97;
+
         tieLine.getTerminal1().getBusView().getBus().setV(v1).setAngle(angle1);
         tieLine.getTerminal2().getBusView().getBus().setV(v2).setAngle(angle2);
-        double expectedV = (v1 + v2) / 2.0;
-        double expectedAngle = (angle1 + angle2) / 2.0;
-        assertEquals(expectedV, tieLine.getHalf1().getXnodeV(), 0.0d);
-        assertEquals(expectedAngle, tieLine.getHalf1().getXnodeAngle(), 0.0d);
-        assertEquals(expectedV, tieLine.getHalf2().getXnodeV(), 0.0d);
-        assertEquals(expectedAngle, tieLine.getHalf2().getXnodeAngle(), 0.0d);
+        tieLine.getTerminal1().setP(p1).setQ(q1);
+        tieLine.getTerminal2().setP(p2).setQ(q2);
+
+        SV expectedSV1 = new SV(p1, q1, v1, angle1)
+                .otherSide(tieLine.getHalf1().getR(), tieLine.getHalf1().getX(), tieLine.getHalf1().getG1(), tieLine.getHalf1().getB1(), tieLine.getHalf1().getG2(), tieLine.getHalf1().getB2(), 1.0);
+        assertEquals(expectedSV1.getP(), tieLine.getHalf1().getXnodeP(), 0.0d);
+        assertEquals(expectedSV1.getQ(), tieLine.getHalf1().getXnodeQ(), 0.0d);
+        assertEquals(expectedSV1.getU(), tieLine.getHalf1().getXnodeV(), 0.0d);
+        assertEquals(expectedSV1.getA(), tieLine.getHalf1().getXnodeAngle(), 0.0d);
+        SV expectedSV2 = new SV(p2, q2, v2, angle2)
+                .otherSide(tieLine.getHalf2().getR(), tieLine.getHalf2().getX(), tieLine.getHalf2().getG1(), tieLine.getHalf2().getB1(), tieLine.getHalf2().getG2(), tieLine.getHalf2().getB2(), 1.0);
+        assertEquals(expectedSV2.getP(), tieLine.getHalf2().getXnodeP(), 0.0d);
+        assertEquals(expectedSV2.getQ(), tieLine.getHalf2().getXnodeQ(), 0.0d);
+        assertEquals(expectedSV2.getU(), tieLine.getHalf2().getXnodeV(), 0.0d);
+        assertEquals(expectedSV2.getA(), tieLine.getHalf2().getXnodeAngle(), 0.0d);
     }
 
     @Test
