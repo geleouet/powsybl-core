@@ -65,12 +65,6 @@ class TieLineImpl extends LineImpl implements TieLine {
             xnodeAngle = new TDoubleArrayList(variantArraySize);
             xnodeP = new TDoubleArrayList(variantArraySize);
             xnodeQ = new TDoubleArrayList(variantArraySize);
-            for (int i = 0; i < variantArraySize; i++) {
-                xnodeV.add(initXnodeV);
-                xnodeAngle.add(initXnodeAngle);
-                xnodeP.add(initXnodeP);
-                xnodeQ.add(initXnodeQ);
-            }
         }
 
         private void notifyUpdate(String attribute, Object oldValue, Object newValue) {
@@ -282,6 +276,25 @@ class TieLineImpl extends LineImpl implements TieLine {
         this.ucteXnodeCode = ucteXnodeCode;
         this.half1 = attach(network, half1);
         this.half2 = attach(network, half2);
+    }
+
+    void initXnodesValues(Ref<? extends VariantManagerHolder> network) {
+        XnodeValuesComputation.computeAndSetXnodeValues(this.half1, getTerminal1(), sv -> {
+            for (int i = 0; i < network.get().getVariantManager().getVariantArraySize(); i++) {
+                half1.xnodeV.add(sv.getU());
+                half1.xnodeAngle.add(sv.getA());
+                half1.xnodeP.add(sv.getP());
+                half1.xnodeQ.add(sv.getQ());
+            }
+        });
+        XnodeValuesComputation.computeAndSetXnodeValues(this.half2, getTerminal1(), sv -> {
+            for (int i = 0; i < network.get().getVariantManager().getVariantArraySize(); i++) {
+                half2.xnodeV.add(sv.getU());
+                half2.xnodeAngle.add(sv.getA());
+                half2.xnodeP.add(sv.getP());
+                half2.xnodeQ.add(sv.getQ());
+            }
+        });
     }
 
     private HalfLineImpl attach(Ref<? extends VariantManagerHolder> network, HalfLineImpl half) {
