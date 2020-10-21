@@ -8,11 +8,13 @@ package com.powsybl.iidm.network.impl;
 
 import java.util.Objects;
 
+import com.powsybl.iidm.network.BoundaryPoint;
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.ValidationException;
 import com.powsybl.iidm.network.impl.util.Ref;
-import com.powsybl.iidm.network.util.XnodeValuesComputation;
-import gnu.trove.list.array.TDoubleArrayList;
+
+import static com.powsybl.iidm.network.Branch.Side.ONE;
+import static com.powsybl.iidm.network.Branch.Side.TWO;
 
 /**
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
@@ -32,39 +34,8 @@ class TieLineImpl extends LineImpl implements TieLine {
         double b2 = Double.NaN;
         boolean fictitious = false;
 
-        double initXnodeV = Double.NaN;
-        double initXnodeAngle = Double.NaN;
-        double initXnodeP = Double.NaN;
-        double initXnodeQ = Double.NaN;
-
-        TDoubleArrayList xnodeV;
-        TDoubleArrayList xnodeAngle;
-        TDoubleArrayList xnodeP;
-        TDoubleArrayList xnodeQ;
-
-        void setInitXnodeV(double initXnodeV) {
-            this.initXnodeV = initXnodeV;
-        }
-
-        void setInitXnodeAngle(double initXnodeAngle) {
-            this.initXnodeAngle = initXnodeAngle;
-        }
-
-        void setInitXnodeP(double initXnodeP) {
-            this.initXnodeP = initXnodeP;
-        }
-
-        void setInitXnodeQ(double initXnodeQ) {
-            this.initXnodeQ = initXnodeQ;
-        }
-
-        private void setParent(Ref<? extends VariantManagerHolder> network, TieLineImpl parent) {
+        private void setParent(TieLineImpl parent) {
             this.parent = parent;
-            int variantArraySize = network.get().getVariantManager().getVariantArraySize();
-            xnodeV = new TDoubleArrayList(variantArraySize);
-            xnodeAngle = new TDoubleArrayList(variantArraySize);
-            xnodeP = new TDoubleArrayList(variantArraySize);
-            xnodeQ = new TDoubleArrayList(variantArraySize);
         }
 
         private void notifyUpdate(String attribute, Object oldValue, Object newValue) {
@@ -96,47 +67,15 @@ class TieLineImpl extends LineImpl implements TieLine {
         }
 
         @Override
-        public double getXnodeV() {
-            return xnodeV.get(parent.getNetwork().getVariantIndex());
-        }
-
-        private void setXnodeV(double v) {
-            int variantIndex = parent.getNetwork().getVariantIndex();
-            double oldValue = xnodeV.set(variantIndex, v);
-            notifyUpdate("xnodeV", oldValue, v);
-        }
-
-        @Override
-        public double getXnodeAngle() {
-            return xnodeAngle.get(parent.getNetwork().getVariantIndex());
-        }
-
-        private void setXnodeAngle(double angle) {
-            int variantIndex = parent.getNetwork().getVariantIndex();
-            double oldValue = xnodeAngle.set(variantIndex, angle);
-            notifyUpdate("xnodeAngle", oldValue, angle);
-        }
-
-        @Override
         public double getXnodeP() {
-            return xnodeP.get(parent.getNetwork().getVariantIndex());
-        }
-
-        private void setXnodeP(double p) {
-            int variantIndex = parent.getNetwork().getVariantIndex();
-            double oldValue = xnodeP.set(variantIndex, p);
-            notifyUpdate("xnodeP", oldValue, p);
+            Side side = this == parent.half1 ? ONE : TWO;
+            return parent.getBoundaryPoint(side).getP();
         }
 
         @Override
         public double getXnodeQ() {
-            return xnodeQ.get(parent.getNetwork().getRef().get().getVariantIndex());
-        }
-
-        private void setXnodeQ(double q) {
-            int variantIndex = parent.getNetwork().getVariantIndex();
-            double oldValue = xnodeQ.set(variantIndex, q);
-            notifyUpdate("xnodeQ", oldValue, q);
+            Side side = this == parent.half1 ? ONE : TWO;
+            return parent.getBoundaryPoint(side).getQ();
         }
 
         @Override
@@ -233,36 +172,6 @@ class TieLineImpl extends LineImpl implements TieLine {
         private String getHalfLineAttribute() {
             return this == parent.half1 ? "half1" : "half2";
         }
-
-        void extendVariantArraySize(int number, int sourceIndex) {
-            xnodeV.ensureCapacity(xnodeV.size() + number);
-            xnodeAngle.ensureCapacity(xnodeAngle.size() + number);
-            xnodeP.ensureCapacity(xnodeP.size() + number);
-            xnodeQ.ensureCapacity(xnodeQ.size() + number);
-            for (int i = 0; i < number; i++) {
-                xnodeV.add(xnodeV.get(sourceIndex));
-                xnodeAngle.add(xnodeAngle.get(sourceIndex));
-                xnodeP.add(xnodeP.get(sourceIndex));
-                xnodeQ.add(xnodeQ.get(sourceIndex));
-            }
-        }
-
-        void reduceVariantArraySize(int number) {
-            xnodeV.remove(xnodeV.size() - number, number);
-            xnodeAngle.remove(xnodeAngle.size() - number, number);
-            xnodeP.remove(xnodeP.size() - number, number);
-            xnodeQ.remove(xnodeQ.size() - number, number);
-
-        }
-
-        void allocateVariantArrayElement(int[] indexes, int sourceIndex) {
-            for (int index : indexes) {
-                xnodeV.set(index, xnodeV.get(sourceIndex));
-                xnodeAngle.set(index, xnodeAngle.get(sourceIndex));
-                xnodeP.set(index, xnodeP.get(sourceIndex));
-                xnodeQ.set(index, xnodeQ.get(sourceIndex));
-            }
-        }
     }
 
     private final String ucteXnodeCode;
@@ -271,53 +180,21 @@ class TieLineImpl extends LineImpl implements TieLine {
 
     private final HalfLineImpl half2;
 
+    private final TieLineBoundaryPointImpl boundaryPoint1;
+    private final TieLineBoundaryPointImpl boundaryPoint2;
+
     TieLineImpl(Ref<? extends VariantManagerHolder> network, String id, String name, boolean fictitious, String ucteXnodeCode, HalfLineImpl half1, HalfLineImpl half2) {
         super(id, name, fictitious, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
         this.ucteXnodeCode = ucteXnodeCode;
         this.half1 = attach(network, half1);
         this.half2 = attach(network, half2);
-    }
-
-    void initXnodesValues(Ref<? extends VariantManagerHolder> network) {
-        XnodeValuesComputation.computeAndSetXnodeValues(this.half1, getTerminal1(), sv -> {
-            for (int i = 0; i < network.get().getVariantManager().getVariantArraySize(); i++) {
-                half1.xnodeV.add(sv.getU());
-                half1.xnodeAngle.add(sv.getA());
-                half1.xnodeP.add(sv.getP());
-                half1.xnodeQ.add(sv.getQ());
-            }
-        });
-        XnodeValuesComputation.computeAndSetXnodeValues(this.half2, getTerminal1(), sv -> {
-            for (int i = 0; i < network.get().getVariantManager().getVariantArraySize(); i++) {
-                half2.xnodeV.add(sv.getU());
-                half2.xnodeAngle.add(sv.getA());
-                half2.xnodeP.add(sv.getP());
-                half2.xnodeQ.add(sv.getQ());
-            }
-        });
+        this.boundaryPoint1 = new TieLineBoundaryPointImpl(this.half1, this::getTerminal1);
+        this.boundaryPoint2 = new TieLineBoundaryPointImpl(this.half2, this::getTerminal2);
     }
 
     private HalfLineImpl attach(Ref<? extends VariantManagerHolder> network, HalfLineImpl half) {
-        half.setParent(network, this);
+        half.setParent(this);
         return half;
-    }
-
-    void computeAndSetXnodeHalf1() {
-        XnodeValuesComputation.computeAndSetXnodeValues(half1, getTerminal1(), sv -> {
-            half1.setXnodeP(sv.getP());
-            half1.setXnodeQ(sv.getQ());
-            half1.setXnodeV(sv.getU());
-            half1.setXnodeAngle(sv.getA());
-        });
-    }
-
-    void computeAndSetXnodeHalf2() {
-        XnodeValuesComputation.computeAndSetXnodeValues(half2, getTerminal2(), sv -> {
-            half2.setXnodeP(sv.getP());
-            half2.setXnodeQ(sv.getQ());
-            half2.setXnodeV(sv.getU());
-            half2.setXnodeAngle(sv.getA());
-        });
     }
 
     @Override
@@ -417,26 +294,12 @@ class TieLineImpl extends LineImpl implements TieLine {
     }
 
     @Override
-    public void extendVariantArraySize(int initVariantArraySize, int number, int sourceIndex) {
-        super.extendVariantArraySize(initVariantArraySize, number, sourceIndex);
-
-        half1.extendVariantArraySize(number, sourceIndex);
-        half2.extendVariantArraySize(number, sourceIndex);
-    }
-
-    @Override
-    public void reduceVariantArraySize(int number) {
-        super.reduceVariantArraySize(number);
-
-        half1.reduceVariantArraySize(number);
-        half2.reduceVariantArraySize(number);
-    }
-
-    @Override
-    public void allocateVariantArrayElement(int[] indexes, int sourceIndex) {
-        super.allocateVariantArrayElement(indexes, sourceIndex);
-
-        half1.allocateVariantArrayElement(indexes, sourceIndex);
-        half2.allocateVariantArrayElement(indexes, sourceIndex);
+    public BoundaryPoint getBoundaryPoint(Side side) {
+        if (side == ONE) {
+            return boundaryPoint1;
+        } else if (side == TWO) {
+            return boundaryPoint2;
+        }
+        throw new AssertionError("Unexpected tieLine side: " + side);
     }
 }

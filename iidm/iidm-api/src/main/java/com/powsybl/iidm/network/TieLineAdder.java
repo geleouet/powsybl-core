@@ -23,17 +23,21 @@ public interface TieLineAdder extends BranchAdder<TieLineAdder> {
 
     TieLineAdder setB2(double b2);
 
-    default TieLineAdder setXnodeV(double xnodeV) {
+    /**
+     * @deprecated Boundary P is now calculated, never set.
+     */
+    @Deprecated
+    default TieLineAdder setXnodeP(double xnodeP) {
         return this;
     }
 
-    default TieLineAdder setXnodeAngle(double xnodeAngle) {
+    /**
+     * @deprecated Boundary Q is now calculated, never set.
+     */
+    @Deprecated
+    default TieLineAdder setXnodeQ(double xnodeQ) {
         return this;
     }
-
-    TieLineAdder setXnodeP(double xnodeP);
-
-    TieLineAdder setXnodeQ(double xnodeQ);
 
     TieLineAdder setUcteXnodeCode(String ucteXnodeCode);
 

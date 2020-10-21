@@ -76,8 +76,6 @@ public abstract class AbstractConnectedComponentWithTieLineBugTest {
                 .setG2(0.0)
                 .setB1(0.0)
                 .setB2(0.0)
-                .setXnodeP(0.0)
-                .setXnodeQ(0.0)
                 .line2()
                 .setId("l2")
                 .setR(1.0)
@@ -86,8 +84,6 @@ public abstract class AbstractConnectedComponentWithTieLineBugTest {
                 .setG2(0.0)
                 .setB1(0.0)
                 .setB2(0.0)
-                .setXnodeP(0.0)
-                .setXnodeQ(0.0)
                 .setUcteXnodeCode("XNODE")
                 .add();
         assertEquals(0, b1.getConnectedComponent().getNum());
