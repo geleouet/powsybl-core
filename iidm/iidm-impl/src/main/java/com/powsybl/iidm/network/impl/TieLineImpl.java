@@ -11,7 +11,6 @@ import java.util.Objects;
 import com.powsybl.iidm.network.BoundaryPoint;
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.ValidationException;
-import com.powsybl.iidm.network.impl.util.Ref;
 
 import static com.powsybl.iidm.network.Branch.Side.ONE;
 import static com.powsybl.iidm.network.Branch.Side.TWO;
@@ -183,16 +182,16 @@ class TieLineImpl extends LineImpl implements TieLine {
     private final TieLineBoundaryPointImpl boundaryPoint1;
     private final TieLineBoundaryPointImpl boundaryPoint2;
 
-    TieLineImpl(Ref<? extends VariantManagerHolder> network, String id, String name, boolean fictitious, String ucteXnodeCode, HalfLineImpl half1, HalfLineImpl half2) {
+    TieLineImpl(String id, String name, boolean fictitious, String ucteXnodeCode, HalfLineImpl half1, HalfLineImpl half2) {
         super(id, name, fictitious, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
         this.ucteXnodeCode = ucteXnodeCode;
-        this.half1 = attach(network, half1);
-        this.half2 = attach(network, half2);
+        this.half1 = attach(half1);
+        this.half2 = attach(half2);
         this.boundaryPoint1 = new TieLineBoundaryPointImpl(this.half1, this::getTerminal1);
         this.boundaryPoint2 = new TieLineBoundaryPointImpl(this.half2, this::getTerminal2);
     }
 
-    private HalfLineImpl attach(Ref<? extends VariantManagerHolder> network, HalfLineImpl half) {
+    private HalfLineImpl attach(HalfLineImpl half) {
         half.setParent(this);
         return half;
     }
