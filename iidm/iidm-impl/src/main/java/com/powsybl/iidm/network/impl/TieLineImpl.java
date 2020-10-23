@@ -69,6 +69,7 @@ class TieLineImpl extends LineImpl implements TieLine {
          * @deprecated Use {@link #getBoundaryPoint(Side)} and {@link BoundaryPoint#getP()} instead.
          */
         @Deprecated
+        @Override
         public double getXnodeP() {
             Side side = this == parent.half1 ? ONE : TWO;
             return parent.getBoundaryPoint(side).getP();
@@ -78,6 +79,7 @@ class TieLineImpl extends LineImpl implements TieLine {
          * @deprecated Boundary P is always calculated, never set.
          */
         @Deprecated
+        @Override
         public double getXnodeQ() {
             Side side = this == parent.half1 ? ONE : TWO;
             return parent.getBoundaryPoint(side).getQ();
