@@ -8,6 +8,7 @@ package com.powsybl.iidm.network;
 
 import java.util.Set;
 
+import com.powsybl.commons.config.PlatformConfig;
 import org.joda.time.DateTime;
 
 /**
@@ -365,8 +366,6 @@ public final class ValidationUtil {
     public static void checkPowerFactor(Validable validable, double powerFactor) {
         if (Double.isNaN(powerFactor)) {
             throw new ValidationException(validable, "power factor is invalid");
-        } else if (Math.abs(powerFactor) > 1) {
-            throw new ValidationException(validable, "power factor is invalid, it should be between -1 and 1");
         }
     }
 
