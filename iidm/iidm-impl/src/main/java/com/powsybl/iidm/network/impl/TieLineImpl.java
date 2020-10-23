@@ -65,13 +65,19 @@ class TieLineImpl extends LineImpl implements TieLine {
             notifyUpdate("name", oldValue, name);
         }
 
-        @Override
+        /**
+         * @deprecated Use {@link #getBoundaryPoint(Side)} and {@link BoundaryPoint#getP()} instead.
+         */
+        @Deprecated
         public double getXnodeP() {
             Side side = this == parent.half1 ? ONE : TWO;
             return parent.getBoundaryPoint(side).getP();
         }
 
-        @Override
+        /**
+         * @deprecated Boundary P is always calculated, never set.
+         */
+        @Deprecated
         public double getXnodeQ() {
             Side side = this == parent.half1 ? ONE : TWO;
             return parent.getBoundaryPoint(side).getQ();
